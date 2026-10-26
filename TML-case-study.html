@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The McCord List · Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#F7DCDC;--ink:#0C0C0C;--paper:#FCFCFD;--g1:#EFF1F4;--g2:#E7E9EC;--mauve:#4A2B33;--mute:rgba(12,12,12,.62)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Jost,Helvetica,Arial,sans-serif;font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+::selection{background:var(--pink);color:var(--ink)}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.serif{font-family:'Baskervville',Georgia,serif;font-weight:500}
+.wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.fill{width:100%;height:100%;object-fit:cover;background:var(--g1)}
+
+/* header */
+.top{display:flex;justify-content:space-between;padding:18px 40px 0;font-size:10.5px;font-weight:500;letter-spacing:.3em;color:rgba(12,12,12,.5)}
+.top a{color:var(--ink)}
+.nav{position:sticky;top:0;z-index:20;background:rgba(252,252,253,.96);backdrop-filter:blur(8px);border-top:1px solid var(--ink);border-bottom:1px solid var(--g2)}
+.nav-in{display:flex;justify-content:space-between;align-items:center;gap:24px;max-width:1360px;margin:0 auto;padding:12px 40px;font-size:11px;font-weight:500;letter-spacing:.26em}
+.nlogo img{width:150px}
+.nlinks{display:flex;align-items:center;flex-wrap:wrap;justify-content:flex-end;gap:6px 30px}
+.nav-in a:hover{opacity:.6}
+.nav-in .cta{background:var(--pink);padding:8px 16px}
+
+/* hero */
+.hero{background:var(--pink);border-bottom:1px solid var(--g2);overflow:hidden}
+.hero-in{max-width:1360px;margin:0 auto;padding:clamp(72px,8vw,120px) 40px;display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(32px,5vw,80px);align-items:center}
+.hero-shot{position:relative}
+.hero-shot::before{content:'';position:absolute;width:62%;aspect-ratio:1;border-radius:50%;background:rgba(252,252,253,.45);left:-14%;bottom:-38%}
+.browser{position:relative;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 50px -22px rgba(74,43,51,.45),0 8px 18px -8px rgba(12,12,12,.12)}
+.bar{display:flex;align-items:center;gap:6px;height:30px;padding:0 14px;border-bottom:1px solid var(--g2)}
+.bar i{width:9px;height:9px;border-radius:50%;background:var(--g2)}
+.bar i:first-child{background:var(--pink)}
+.bar span{margin-left:12px;font-size:10px;letter-spacing:.14em;color:rgba(12,12,12,.45)}
+.hero h1{margin:0;font-family:'Baskervville',serif;font-weight:500;color:var(--ink);font-size:clamp(38px,4.6vw,68px);line-height:1.08;max-width:14ch}
+.btns{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:34px}
+.btn{display:inline-block;font-size:11.5px;font-weight:500;letter-spacing:.26em;padding:16px 30px}
+.btn.pri{background:var(--pink);color:var(--ink)}
+.btn.gho{border:1px solid rgba(252,252,253,.7);color:var(--paper)}
+.btn.ink{background:var(--ink);color:var(--paper)}
+.btn:hover{opacity:.85}
+
+/* meta strip */
+.details{border-bottom:1px solid var(--g2)}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.meta > div{background:#fff;border:1px solid var(--g2);border-top:3px solid var(--ink);padding:30px 26px 34px}
+.meta .lbl{margin-bottom:14px}
+.meta .v{font-family:'Baskervville',serif;font-size:20px;line-height:1.4;margin:0}
+.meta a{border-bottom:1px solid currentColor}
+.lbl{font-size:10.5px;font-weight:500;letter-spacing:.36em;color:rgba(12,12,12,.5);margin:0 0 8px}
+
+/* sections */
+section.s{padding:104px 0 96px}
+.head{text-align:center;max-width:700px;margin:0 auto 60px}
+.rule{width:72px;height:1px;background:var(--ink);margin:0 auto 26px}
+.head h2{margin:0;font-weight:300;font-size:clamp(22px,2.6vw,32px);letter-spacing:.32em;text-transform:uppercase}
+.head p{margin:20px auto 0;color:var(--mute);max-width:58ch}
+.big{font-family:'Baskervville',serif;font-weight:500;font-size:clamp(32px,4.2vw,56px);line-height:1.12;margin:0}
+.big em{font-style:italic;font-weight:400}
+
+/* results */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--g2)}
+.stat{padding:40px 28px 36px;border-bottom:1px solid var(--g2);border-right:1px solid var(--g2)}
+.stat:nth-child(3n){border-right:0}
+.stat .n{font-family:'Baskervville',serif;font-weight:500;font-size:clamp(40px,4.4vw,62px);line-height:1}
+.stat .n small{font-size:.42em;letter-spacing:.04em;color:rgba(12,12,12,.5)}
+.stat p{margin:14px 0 0;color:var(--mute);font-size:15px}
+
+/* homepage build */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center}
+.split .ph{aspect-ratio:4/5;overflow:hidden}
+.mods{list-style:none;margin:0 auto;padding:0;counter-reset:m;max-width:820px;border-top:1px solid var(--g2)}
+.mods li{counter-increment:m;display:grid;grid-template-columns:44px 1fr;gap:6px 14px;padding:18px 0;border-bottom:1px solid var(--g2)}
+.mods li::before{content:counter(m,decimal-leading-zero);font-size:11px;font-weight:500;letter-spacing:.2em;color:rgba(12,12,12,.45);padding-top:6px}
+.mods b{font-family:'Baskervville',serif;font-weight:500;font-size:20px;display:block;line-height:1.3}
+.mods span{color:var(--mute);font-size:15px}
+
+/* design system */
+.ds{background:#fff;border-top:1px solid var(--g2);border-bottom:1px solid var(--g2)}
+.sw{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.sw div{aspect-ratio:1/1.1;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;font-size:10.5px;font-weight:500;letter-spacing:.2em;border:1px solid var(--g2)}
+.type{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.type > div{border:1px solid var(--g2);padding:32px}
+.type .aa{font-size:64px;line-height:1;margin:10px 0 12px}
+.uis{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:24px;padding:32px;border:1px solid var(--g2)}
+.ghost-dk{border:1px solid rgba(12,12,12,.4);color:var(--ink)}
+
+/* shows */
+.shows{background:linear-gradient(180deg,var(--pink),var(--mauve));color:var(--ink)}
+.shows .head p{color:rgba(12,12,12,.7)}
+.covers{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.covers figure{margin:0;aspect-ratio:16/9;overflow:hidden;box-shadow:0 10px 30px rgba(12,12,12,.18)}
+.fixes{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;color:var(--paper)}
+.fixes h4{margin:0 0 8px;font-size:10.5px;font-weight:500;letter-spacing:.3em;color:var(--pink)}
+.fixes p{margin:0;font-size:15px;opacity:.88}
+
+/* systems */
+.flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap;justify-content:center}
+.step{flex:1 1 0;min-width:150px;border:1px solid var(--ink);padding:22px 18px;text-align:center;background:var(--paper)}
+.step .lbl{margin-bottom:10px}
+.step b{font-family:'Baskervville',serif;font-weight:500;font-size:18px;line-height:1.3;display:block}
+.step.pk{background:var(--pink);border-color:var(--pink)}
+.arr{display:flex;align-items:center;padding:0 10px;font-size:18px;color:rgba(12,12,12,.4)}
+.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:72px;border-top:1px solid var(--g2)}
+.checks div{padding:30px 28px 30px 0;border-bottom:1px solid var(--g2)}
+.checks h4{margin:0 0 12px;font-size:10.5px;font-weight:500;letter-spacing:.3em}
+.checks ul{margin:0;padding:0;list-style:none}
+.checks li{padding:5px 0 5px 18px;position:relative;font-size:15px;color:var(--mute)}
+.checks li::before{content:'';position:absolute;left:0;top:14px;width:8px;height:1px;background:var(--ink)}
+
+/* experiences strip */
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.strip figure{margin:0;aspect-ratio:1;overflow:hidden}
+
+/* challenge */
+.select{text-align:center;padding:120px 0 112px}
+.select p{max-width:60ch;margin:26px auto 0;color:var(--mute)}
+
+/* pink close */
+.list{background:var(--pink);padding:104px 24px;text-align:center}
+.list .lbl{color:rgba(12,12,12,.6)}
+.list .big{margin-top:14px}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:34px auto 40px;max-width:760px}
+.tags span{border:1px solid rgba(12,12,12,.35);padding:8px 14px;font-size:10.5px;font-weight:500;letter-spacing:.24em}
+
+/* footer */
+footer{background:var(--ink);color:var(--paper);text-align:center;padding:84px 24px 56px}
+footer img{width:clamp(200px,24vw,300px);margin:0 auto}
+footer nav{display:flex;justify-content:center;flex-wrap:wrap;gap:12px 30px;margin-top:40px;font-size:11px;letter-spacing:.26em}
+footer nav a.pk{color:var(--pink)}
+.frule{width:56px;height:1px;background:var(--pink);margin:44px auto}
+.legal{font-size:10px;letter-spacing:.24em;opacity:.55;margin:0}
+.legal + .legal{margin-top:8px}
+
+@media (max-width:900px){
+  .wrap{padding:0 24px}
+  .top{padding:16px 24px 0}
+  .hero-in{grid-template-columns:1fr;padding:64px 24px 72px}
+  .nav-in{padding:10px 24px}
+  .browser{border-radius:10px}
+  .meta{grid-template-columns:1fr 1fr}
+    .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3n){border-right:1px solid var(--g2)}
+  .stat:nth-child(2n){border-right:0}
+  .split{grid-template-columns:1fr;gap:40px}
+  .split .ph{aspect-ratio:16/10}
+  .sw{grid-template-columns:repeat(3,1fr)}
+  .covers{grid-template-columns:repeat(2,1fr)}
+  .fixes,.checks{grid-template-columns:1fr}
+  .checks div{padding-right:0;min-width:0}
+  .flow{flex-direction:column}
+  .arr{justify-content:center;padding:8px 0;transform:rotate(90deg)}
+  .strip{grid-template-columns:repeat(3,1fr)}
+  section.s{padding:80px 0 72px}
+  .nlinks{gap:6px 16px;font-size:10px;letter-spacing:.2em}
+  .nlinks a:not(.cta){display:none}
+  .nlogo img{width:120px}
+}
+@media (max-width:560px){
+  .top span:first-child{display:none}
+  .top{justify-content:center}
+  .stats,.type,.meta{grid-template-columns:1fr}
+  .stat{border-right:0!important}
+  .sw{grid-template-columns:repeat(2,1fr)}
+  .type .aa{font-size:48px}
+}
+</style>
+</head>
+<body>
+
+<div class="top"><span>CASE STUDY · 2026</span><a href="https://themccordlist.com" target="_blank" rel="noopener">VISIT THE LIVE SITE</a></div>
+<nav class="nav"><div class="nav-in">
+  <a class="nlogo" href="#overview"><img data-m="3kYX5YFRdgE7aBsBEOuc/media/6a70fb78a1aa89ccfe252d99.png" data-w="400" alt="The McCord List"></a>
+  <div class="nlinks"><a href="#overview">OVERVIEW</a><a href="#design">DESIGN SYSTEM</a><a href="#homepage">THE HOMEPAGE</a><a href="#results">RESULTS</a><a href="#shows">SHOW PAGES</a><a href="#systems">SYSTEMS</a><a href="#challenge">CHALLENGE</a>
+  <a class="cta" href="https://themccordlist.com" target="_blank" rel="noopener">VIEW LIVE</a></div>
+</div></nav>
+
+<header class="hero" id="overview"><div class="hero-in">
+  <div class="hero-copy">
+    <h1>A Hollywood media network, rebuilt as one editorial page.</h1>
+  </div>
+  <div class="hero-shot">
+    <div class="browser">
+      <div class="bar"><i></i><i></i><i></i><span>themccordlist.com</span></div>
+      <img src="https://raw.githubusercontent.com/systems-and-sites/mccord-portfolio/main/sample-1.png" alt="The McCord List homepage, The Lot slide">
+    </div>
+  </div>
+</div></header>
+
+<section class="s details" id="details"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>Project Details</h2></div>
+  <div class="meta">
+  <div><p class="lbl">CLIENT</p><p class="v">The McCord List, founded by Rachel McCord &amp; Rick Schirmer</p></div>
+  <div><p class="lbl">ROLE</p><p class="v">Designer, developer, GHL builder</p></div>
+  <div><p class="lbl">PLATFORM</p><p class="v">GoHighLevel: custom code, universal sections, forms, workflows</p></div>
+  <div><p class="lbl">LIVE</p><p class="v"><a href="https://themccordlist.com" target="_blank" rel="noopener">themccordlist.com</a></p></div>
+  </div>
+</div></section>
+
+<section class="s ds" id="design"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>Design System</h2><p>One set of type, color, and button rules shared by the homepage, every show page, the 404, and the confirmation emails.</p></div>
+  <div class="sw">
+    <div style="background:#F7DCDC;border-color:#F7DCDC">BLUSH<br>#F7DCDC</div>
+    <div style="background:#0C0C0C;color:#FCFCFD;border-color:#0C0C0C">INK<br>#0C0C0C</div>
+    <div style="background:#FCFCFD">PAPER<br>#FCFCFD</div>
+    <div style="background:#EFF1F4">MIST<br>#EFF1F4</div>
+    <div style="background:#4A2B33;color:#F7DCDC;border-color:#4A2B33">MAUVE<br>#4A2B33</div>
+  </div>
+  <div class="type">
+    <div><p class="lbl">DISPLAY · BASKERVVILLE 500</p><div class="aa serif">Aa</div><p class="serif" style="font-size:22px;line-height:1.35;margin:0">Not every show belongs on The McCord List.</p></div>
+    <div><p class="lbl">BODY · JOST 300</p><div class="aa" style="font-weight:300">Aa</div><p style="margin:0;color:var(--mute)">Clean and airy body copy, with wide-tracked uppercase labels for eyebrows, nav, and buttons.</p></div>
+  </div>
+  <div class="uis">
+    <span class="chip">CHIP</span>
+    <a class="btn pri">PRIMARY</a>
+    <a class="btn ink">INK</a>
+    <a class="btn ghost-dk">GHOST</a>
+    <span class="lbl" style="margin:0 0 0 auto">SHARP CORNERS · 11.5PX · .26EM TRACKING</span>
+  </div>
+</div></section>
+
+<section class="s" id="homepage"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>The Homepage</h2><p>A lengthy multi-page site condensed into a single Vogue-inspired editorial page. Selective, cinematic, and built to drive applications.</p></div>
+  <ol class="mods">
+      <li><div><b>Full-bleed video hero</b><span>Compressed from 128MB to 18MB so it loads fast on mobile.</span></div></li>
+      <li><div><b>Featured In and Streaming Across</b><span>Press logo marquee plus the platforms the network airs on.</span></div></li>
+      <li><div><b>The Lot</b><span>The MBS Media Campus studio story, told in three editorial cards.</span></div></li>
+      <li><div><b>Hollywood Experiences</b><span>Event galleries with a shared lightbox, about 100 photos and videos.</span></div></li>
+      <li><div><b>The Celebrity Gifting Suite</b><span>A 52-photo gallery with an application-only brand membership CTA.</span></div></li>
+      <li><div><b>Shows carousel</b><span>Colors adapt to each show cover, Apple Music style, with a Full List quick-jump.</span></div></li>
+      <li><div><b>Apply to the List</b><span>The form opens inline. No pop-ups, no page jumps.</span></div></li>
+    </ol>
+</div></section>
+
+<section class="s" id="results"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>Results</h2><p>What changed after the rebuild.</p></div>
+  <div class="stats">
+    <div class="stat"><div class="n">10<small> → </small>200</div><p>Daily views, from about 10 a day to about 200 a day in roughly three months.</p></div>
+    <div class="stat"><div class="n">1,000</div><p>Views in a single day at peak.</p></div>
+    <div class="stat"><div class="n">0<small> → </small>26</div><p>Indexed URLs in the sitemap, built from an empty one.</p></div>
+    <div class="stat"><div class="n">22</div><p>Show pages rebuilt on one shared template.</p></div>
+    <div class="stat"><div class="n">1</div><p>Application funnel, replacing three or more scattered forms.</p></div>
+    <div class="stat"><div class="n">1 <small>edit</small></div><p>Updates the header and footer on all 21 show pages at once.</p></div>
+  </div>
+</div></section>
+
+<section class="s shows" id="shows"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>Show Pages</h2><p>22 show pages rebuilt on one template, each tuned to its poster: button placement, ghost color, and contrast.</p></div>
+  <div class="covers">
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a96c77428f06327141be8f9.svg" data-w="700" alt="The McCord List Today"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a276b5649e55f8519bc0dd8.png" data-w="700" alt="Dear Dr. Charryse"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a2754d3d91f654725b63fc1.png" data-w="700" alt="The Drama Diet"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a2754c5d91f654725b63f2b.png" data-w="700" alt="Taylor Taylor Taylor"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a2754fa0de795fc13115a5e.png" data-w="700" alt="Redefining Possible"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a277134fc95b24549ce8b01.png" data-w="700" alt="In Heels with Keni Silva"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a5fd4b828b4c07e406cc073.png" data-w="700" alt="Profit By Design"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a27827449e55f8519bd8eb4.png" data-w="700" alt="Soulful Career Calling"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a275b2a2db4a9d19ae2f78a.png" data-w="700" alt="The Book Club"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a27715e19b4ff338beae967.png" data-w="700" alt="The Melina Method"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a27600cf607d4002bd86e15.png" data-w="700" alt="What Comes Next"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a2754faaa68f9b540bb4b01.png" data-w="700" alt="Women Helping Women"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a9887cbefeed0ae259fabc8.png" data-w="700" alt="Stop Pretending You're Fine"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a622ff5fb06386ede6ab5e0.png" data-w="700" alt="My Midlife Era"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a98bd8d0ba3728cefe1e84f.png" data-w="700" alt="Behind The Label with LeiLani"></figure>
+    <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a596d7cbaf5f6da40db5cf3.png" data-w="700" alt="ViralBrand with Rick Schirmer"></figure>
+  </div>
+  <div class="fixes">
+    <div><h4>CLEANED UP</h4><p>Many old pages carried another show's headings, topics, and canonicals. I fixed every one.</p></div>
+    <div><h4>WHERE TO WATCH</h4><p>Each page got TV and podcast platform logo rows: TML TV, Apple TV, Roku, Fire TV, Samsung, Spotify, and more.</p></div>
+    <div><h4>ONE HEADER, ONE FOOTER</h4><p>Universal sections mean one edit updates every show page at once.</p></div>
+  </div>
+</div></section>
+
+<section class="s" id="systems"><div class="wrap">
+  <div class="head"><div class="rule"></div><h2>Systems</h2><p>One "Get on The List" form feeds a single automated workflow.</p></div>
+  <div class="flow">
+    <div class="step pk"><p class="lbl">TRIGGER</p><b>Application submitted</b></div><div class="arr">→</div>
+    <div class="step"><p class="lbl">NOTIFY</p><b>Team alert sent</b></div><div class="arr">→</div>
+    <div class="step"><p class="lbl">PIPELINE</p><b>Opportunity created</b></div><div class="arr">→</div>
+    <div class="step"><p class="lbl">EMAIL</p><b>Branded HTML confirmation</b></div><div class="arr">→</div>
+    <div class="step"><p class="lbl">IF / THEN</p><b>Brand membership tag</b></div>
+  </div>
+  <div class="checks">
+    <div><h4>SEO</h4><ul><li>Sitemap built, 0 to 26 URLs</li><li>Canonicals on every page</li><li>Stale pages set to noindex</li><li>h1 structure and meta fixes</li><li>301s for retired pages</li></ul></div>
+    <div><h4>PERFORMANCE</h4><ul><li>Images resized and served as webp</li><li>Lazy loading with neighbor prefetch</li><li>Hero video 128MB to 18MB</li><li>Fallbacks on every image</li></ul></div>
+    <div><h4>SITE-WIDE</h4><ul><li>Our Shows page rewritten</li><li>Branded 404 page</li><li>Terms page rebuilt, four agreements</li><li>Outdated platform references removed</li></ul></div>
+  </div>
+</div></section>
+
+<div class="strip">
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a96db41fac7854efe08d7d2.jpg" data-w="500" alt="Hollywood Experiences photo"></figure>
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a96ca5028f06327141c1f9b.jpg" data-w="500" alt="Hollywood Experiences photo"></figure>
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a9715f72ae01952f7423436.jpg" data-w="500" alt="Hollywood Experiences photo"></figure>
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a9715f7fac7854efe0f56d0.jpg" data-w="500" alt="Hollywood Experiences photo"></figure>
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a96d9de28f06327141d6f96.jpeg" data-w="500" alt="Hollywood Experiences photo"></figure>
+  <figure><img class="fill" loading="lazy" data-m="3kYX5YFRdgE7aBsBEOuc/media/6a9715f7a227fec6bd97c837.jpg" data-w="500" alt="Hollywood Experiences photo"></figure>
+</div>
+
+<section class="select" id="challenge"><div class="wrap">
+  <p class="lbl">THE CHALLENGE</p>
+  <h2 class="big" style="margin-top:18px">A full rebrand went live, <em>then got reversed the next day.</em></h2>
+  <p>The client changed direction often. I kept local master files for every page, so rolling a brand out or back across 28 files was a script, not a rebuild. Every live URL got checked after each pass. Nothing went stale.</p>
+</div></section>
+
+<section class="list">
+  <p class="lbl">THE STACK</p>
+  <h2 class="big">Built on GoHighLevel.</h2>
+  <div class="tags"><span>GOHIGHLEVEL</span><span>CUSTOM HTML / CSS / JS</span><span>GHL WORKFLOWS</span><span>GHL FORMS</span><span>UNIVERSAL SECTIONS</span><span>IMAGE CDN</span><span>SEO</span></div>
+  <a class="btn ink" href="https://themccordlist.com" target="_blank" rel="noopener">VISIT THE LIVE SITE</a>
+</section>
+
+<footer>
+  <img data-m="3kYX5YFRdgE7aBsBEOuc/media/6a7367acf325d74f8f3acf18.png" data-w="600" alt="The McCord List">
+  <nav><a href="#homepage">THE HOMEPAGE</a><a href="#results">RESULTS</a><a href="#shows">SHOW PAGES</a><a href="#systems">SYSTEMS</a><a class="pk" href="https://themccordlist.com" target="_blank" rel="noopener">VIEW LIVE</a></nav>
+  <div class="frule"></div>
+  <p class="legal">DESIGNED &amp; BUILT BY DAVE · SYSTEMS &amp; SITES</p>
+  <p class="legal">THE McCORD LIST IS A MEDIA NETWORK FOUNDED BY RACHEL McCORD &amp; RICK SCHIRMER</p>
+</footer>
+
+<script>
+document.querySelectorAll('img[data-m]').forEach(function(i){
+  var o='https://assets.cdn.filesafe.space/'+i.dataset.m;
+  i.onerror=function(){i.onerror=null;i.src=o};
+  i.src='https://wsrv.nl/?url='+encodeURIComponent(o)+'&w='+(i.dataset.w||1200)+'&output=webp&q=80';
+});
+</script>
+</body>
+</html>
