@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The McCord List</title>
+<!-- The McCord List: homepage main block -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Jost:ital,wght@0,300..600;1,300..500&display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth}
+  .mcl-site{margin:0;background:#FCFCFD;color:#0C0C0C;font-family:Jost,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4;overflow-x:clip}
+  .mcl-site *{box-sizing:border-box}
+  .mcl-site a{color:#0C0C0C;text-decoration:none;transition:opacity .25s}
+  .mcl-site a:hover{opacity:.55}
+  .mcl-site input::placeholder{color:rgba(12,12,12,.45);letter-spacing:.06em}
+  .mcl-site ::selection{background:#F7DCDC;color:#0C0C0C}
+  .mcl-wrap{max-width:1280px;margin:0 auto}
+  .mcl-serif{font-family:'Baskervville',serif;font-weight:500}
+  .mcl-kicker{font-size:11px;font-weight:500;letter-spacing:.28em;margin:0}
+  .mcl-chip{display:inline-block;background:#F7DCDC;color:#0C0C0C;padding:6px 13px;font-size:10.5px;font-weight:500;letter-spacing:.3em}
+  .mcl-link{font-size:11.5px;letter-spacing:.26em;border-bottom:1px solid #0C0C0C;padding-bottom:5px}
+  /* image placeholders — swap each for an img.mcl-fill tag */
+  .mcl-ph{width:100%;height:100%;background:repeating-linear-gradient(45deg,#e7e9ec 0 12px,#eff1f4 12px 24px);display:flex;align-items:center;justify-content:center;position:relative}
+  .mcl-ph::after{content:attr(data-label);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.08em;color:rgba(12,12,12,.55);padding:0 16px;text-align:center}
+  .mcl-fill{width:100%;height:100%;object-fit:cover;display:block}
+  .mcl-34 a,.mcl-45 a,.mcl-169 a{display:block;height:100%}
+  /* hero slideshow */
+  .mcl-hero{position:relative;height:86vh;min-height:560px;background:#0C0C0C;overflow:hidden}
+  .mcl-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .mcl-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,.45) 0%,rgba(12,12,12,.5) 55%,rgba(12,12,12,.68) 100%)}
+  .mcl-hero-copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 24px 64px}
+  .mcl-hero-copy h1{margin:0;font-family:'Baskervville',serif;font-weight:500;color:#F7DCDC;font-size:clamp(38px,5.6vw,76px);line-height:1.08;text-wrap:pretty;max-width:920px}
+  .mcl-hero-copy p{margin:20px 0 0;color:rgba(252,252,253,.85);font-size:clamp(15px,1.6vw,18px);font-weight:300;letter-spacing:.06em}
+  .mcl-hero-cta{display:flex;gap:18px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+  .mcl-hero-cta a{display:inline-block;font-size:11.5px;font-weight:500;letter-spacing:.26em;padding:16px 30px}
+  .mcl-hero-cta .is-primary{background:#F7DCDC;color:#0C0C0C}
+  .mcl-hero-cta .is-ghost{border:1px solid rgba(252,252,253,.65);color:#FCFCFD}
+  .mcl-hero .mcl-hero-scroll{position:absolute;left:50%;transform:translateX(-50%);bottom:36px;display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(252,252,253,.85);font-size:9.5px;font-weight:500;letter-spacing:.42em;text-indent:.42em;z-index:3}
+  .mcl-hero-scroll:hover{opacity:1}
+  .mcl-hero-scroll-line{position:relative;display:block;width:1px;height:44px;background:rgba(252,252,253,.3);overflow:hidden}
+  .mcl-hero-scroll-line::after{content:'';position:absolute;left:0;top:-60%;width:1px;height:60%;background:#F7DCDC;animation:mclScrollCue 2.2s cubic-bezier(.4,0,.2,1) infinite}
+  @keyframes mclScrollCue{0%{top:-60%}65%{top:100%}100%{top:100%}}
+  @media (prefers-reduced-motion:reduce){.mcl-hero-scroll-line::after{animation:none}}
+  /* top hero only: dark wash at boosted opacity, white headline */
+  /* anchor scrolling: clear the pinned nav and survive lazy-load layout shifts */
+  #mcl-featured,#mcl-slideshow,#mcl-events,#mcl-suite,#mcl-select,#mcl-the-lot,#mcl-shows,#mcl-list{scroll-margin-top:64px}
+  .mcl-slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity 1.1s ease}
+  .mcl-slide.is-on{opacity:1;pointer-events:auto}
+  .mcl-scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0) 48%,rgba(12,12,12,.6) 100%);pointer-events:none}
+  .mcl-caption{position:absolute;left:clamp(96px,9vw,130px);right:clamp(96px,9vw,130px);bottom:88px;max-width:780px;pointer-events:none}
+  .mcl-caption h2{margin:20px 0 10px;font-family:'Baskervville',serif;font-weight:500;color:#FCFCFD;font-size:clamp(32px,4.2vw,58px);line-height:1.08;text-wrap:pretty}
+  .mcl-caption p{margin:0 0 24px;color:rgba(252,252,253,.85);font-size:16px;font-weight:300;letter-spacing:.03em}
+  .mcl-caption a{pointer-events:none;color:#FCFCFD;font-size:11.5px;letter-spacing:.26em;border-bottom:1px solid rgba(252,252,253,.7);padding-bottom:5px}
+  .mcl-slide.is-on .mcl-caption a{pointer-events:auto}
+  .mcl-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:6;width:46px;height:46px;border-radius:50%;border:1px solid rgba(252,252,253,.55);background:rgba(12,12,12,.18);color:#FCFCFD;font-size:22px;line-height:1;cursor:pointer;font-family:Jost,sans-serif}
+  .mcl-arrow:hover{background:rgba(252,252,253,.22)}
+  .mcl-dots{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);z-index:6;display:flex;gap:10px}
+  .mcl-dots button{width:36px;height:2px;padding:0;border:none;cursor:pointer;background:rgba(252,252,253,.35);transition:background .4s}
+  .mcl-dots button.is-on{background:#FCFCFD}
+  .mcl-counter{position:absolute;right:clamp(24px,5vw,72px);bottom:34px;z-index:6;color:rgba(252,252,253,.85);font-size:11px;letter-spacing:.34em}
+  /* featured-in marquee */
+  .mcl-featured{background:#FCFCFD;padding:54px 0 60px;border-bottom:1px solid rgba(12,12,12,.1)}
+  .mcl-featured .mcl-kicker{text-align:center;margin:0 0 38px;color:rgba(12,12,12,.55)}
+  .mcl-marquee{overflow:hidden}
+  .mcl-marquee-track{display:flex;width:max-content;will-change:transform}
+  .mcl-marquee-grp{display:flex;align-items:center;gap:clamp(48px,7vw,96px);padding-right:clamp(48px,7vw,96px)}
+  .mcl-marquee-grp img{height:32px;width:auto;display:block}
+  .mcl-marquee-grp a{display:flex;align-items:center;gap:10px}
+  .mcl-platforms{background:#FCFCFD;padding:64px 0 72px;border-top:1px solid rgba(12,12,12,.08)}
+  .mcl-platforms .mcl-kicker{text-align:center;margin:0 0 40px;color:rgba(12,12,12,.55)}
+  .mcl-plat-text{font-size:15px;font-weight:500;letter-spacing:.22em;color:#0C0C0C;white-space:nowrap}
+  /* showcase video */
+  .mcl-showcase{background:#FCFCFD;padding:88px 24px 100px}
+  .mcl-showcase-head{text-align:center;max-width:760px;margin:0 auto 48px}
+  .mcl-showcase-head h2{margin:0;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(32px,4vw,52px);line-height:1.1;text-wrap:pretty}
+  .mcl-showcase-head p{margin:20px auto 0;max-width:680px;font-size:16.5px;font-weight:300;line-height:1.7;color:rgba(12,12,12,.72);text-wrap:pretty}
+  .mcl-showcase-frame{position:relative;max-width:1080px;margin:0 auto;box-shadow:14px 14px 0 #0C0C0C}
+  .mcl-showcase-frame video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0C0C0C}
+  .mcl-showcase-sound{position:absolute;top:16px;right:16px;background:#FCFCFD;border:none;cursor:pointer;padding:11px 18px;font-family:Jost,Helvetica,Arial,sans-serif;font-size:10.5px;font-weight:500;letter-spacing:.24em;color:#0C0C0C}
+  .mcl-showcase-sound:hover{background:#F7DCDC;color:#0C0C0C}
+  /* sections */
+  .mcl-section{padding:96px 24px 88px}
+  .mcl-sechead{text-align:center;margin-bottom:64px}
+  .mcl-rule{width:72px;height:1px;background:#0C0C0C;margin:0 auto 28px}
+  .mcl-sechead h2{margin:0;font-size:29px;font-weight:300;letter-spacing:.42em;text-indent:.42em}
+  .mcl-sechead .mcl-sub{margin:18px 0 0;font-size:10.5px;letter-spacing:.32em;color:rgba(12,12,12,.55)}
+  .mcl-sechead .mcl-intro{margin:26px auto 0;max-width:660px;font-size:17px;font-weight:300;line-height:1.75;color:rgba(12,12,12,.72);text-wrap:pretty}
+  .mcl-grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:48px}
+  .mcl-45{aspect-ratio:4/5}
+  .mcl-34{aspect-ratio:3/4}
+  .mcl-32{aspect-ratio:3/2}
+  .mcl-169{aspect-ratio:16/9;position:relative}
+  .mcl-card .mcl-kicker{margin:22px 0 0}
+  .mcl-card .mcl-cap{margin:12px 0 0;font-family:'Baskervville',serif;font-style:italic;font-weight:400;font-size:22px;line-height:1.3;color:rgba(12,12,12,.85)}
+  /* cover */
+  .mcl-cover{border-top:1px solid rgba(12,12,12,.25);padding-top:92px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:clamp(40px,5vw,88px);align-items:center}
+  .mcl-cover h2{margin:26px 0 0;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(36px,4vw,56px);line-height:1.08;text-wrap:pretty}
+  .mcl-cover .mcl-dek{margin:28px 0 0;font-size:17.5px;font-weight:300;line-height:1.75;color:rgba(12,12,12,.72);text-wrap:pretty}
+  .mcl-cover .mcl-link{display:inline-block;margin:34px 0 0}
+  /* shows carousel */
+  .mcl-showcar{position:relative;overflow:hidden;padding:8px 0}
+  .mcl-showtrack{position:relative}
+  .mcl-showcover{position:absolute;top:0;left:50%;width:clamp(280px,44vw,600px);aspect-ratio:16/9;cursor:pointer;opacity:.4;z-index:1;transition:transform .7s cubic-bezier(.22,.61,.36,1),opacity .7s ease;overflow:hidden;will-change:transform}
+  .mcl-showcover.is-on{opacity:1;cursor:default;z-index:2}
+  .mcl-showcar .mcl-arrow{border-color:rgba(12,12,12,.45);background:rgba(252,252,253,.65);color:#0C0C0C;z-index:5}
+  .mcl-showcar .mcl-arrow:hover{background:#F7DCDC;color:#0C0C0C}
+  .mcl-showlist-toggle{display:table;margin:0 0 24px auto;background:none;border:none;border-bottom:1px solid currentColor;color:#0C0C0C;padding:0 0 5px;font-family:Jost,Helvetica,Arial,sans-serif;font-size:10.5px;font-weight:500;letter-spacing:.28em;cursor:pointer;transition:color 1s ease,opacity .25s}
+  .mcl-showlist-toggle:hover{opacity:.55}
+  .mcl-showlist{display:none;max-width:920px;margin:28px auto 0}
+  .mcl-showlist.is-open{display:grid;grid-template-columns:repeat(3,1fr);gap:0 36px}
+  .mcl-showlist button{background:none;border:none;border-bottom:1px solid rgba(127,127,127,.3);padding:12px 2px;font-family:Jost,Helvetica,Arial,sans-serif;font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#0C0C0C;text-align:left;cursor:pointer;transition:color 1s ease,opacity .25s}
+  .mcl-showlist button:hover{opacity:.55}
+  #mcl-shows .mcl-showlist-toggle,#mcl-shows .mcl-showlist button{color:var(--shtop)}
+  @media (max-width:900px){.mcl-showlist.is-open{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:560px){.mcl-showlist.is-open{grid-template-columns:1fr}}
+  .mcl-showinfo{text-align:center;margin-top:46px;transition:opacity .3s ease}
+  .mcl-showinfo h3{margin:0;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(26px,3vw,40px)}
+  .mcl-showinfo .mcl-meta{margin:12px 0 0;font-size:11px;letter-spacing:.24em;color:rgba(12,12,12,.6)}
+  .mcl-showlinks{margin-top:28px;display:flex;gap:38px;justify-content:center;flex-wrap:wrap}
+  /* event albums */
+  .mcl-album{margin-top:8px}
+  .mcl-album-head{text-align:center;margin-bottom:44px}
+  .mcl-album-head h3{margin:20px 0 0;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(30px,3.4vw,46px)}
+  .mcl-album-head .mcl-meta{margin:12px 0 0;font-size:11px;letter-spacing:.24em;color:rgba(12,12,12,.6)}
+  .mcl-album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,45vw),1fr));gap:10px}
+  .mcl-albumthumb{position:relative;padding:0;border:none;background:#eff1f4;cursor:pointer;aspect-ratio:1/1;overflow:hidden;content-visibility:auto;contain-intrinsic-size:auto 300px}
+  .mcl-albumthumb.is-video{background:#0C0C0C}
+  .mcl-albumthumb.is-video video{width:100%;height:100%;object-fit:cover;display:block}
+  .mcl-albumthumb.is-video::before{content:'\25B6\FE0E';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px;color:#F7DCDC;opacity:.95;text-shadow:0 2px 14px rgba(12,12,12,.65);z-index:1;pointer-events:none}
+  .mcl-albumthumb.is-video::after{content:'VIDEO';position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:10px;letter-spacing:.3em;color:#F7DCDC;text-shadow:0 1px 8px rgba(12,12,12,.8);z-index:1;pointer-events:none}
+  .mcl-albumthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease}
+  .mcl-albumthumb:hover img{transform:scale(1.05)}
+  .mcl-album-more{text-align:center;margin-top:40px}
+  .mcl-album-more .mcl-link{background:none;border:none;border-bottom:1px solid #0C0C0C;padding:0 0 5px;cursor:pointer;font-family:Jost,Helvetica,Arial,sans-serif;font-size:11.5px;letter-spacing:.26em;color:#0C0C0C}
+  /* photo lightbox */
+  .mcl-lightbox{position:fixed;inset:0;background:rgba(12,12,12,.94);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s ease}
+  .mcl-lightbox.is-open{opacity:1;pointer-events:auto}
+  .mcl-lightbox img{max-width:92vw;max-height:82vh;object-fit:contain;display:block}
+  .mcl-lb-media{display:none;max-width:92vw}
+  .mcl-lightbox video{max-width:92vw;max-height:74vh;display:block;background:#000;margin:0 auto}
+  .mcl-lb-controls{display:flex;align-items:center;gap:14px;padding:14px 4px 0}
+  .mcl-lb-controls button{background:none;border:none;color:#F7DCDC;cursor:pointer;font-family:Jost,Helvetica,Arial,sans-serif;font-size:11px;letter-spacing:.22em;padding:4px}
+  .mcl-lb-controls button:hover{opacity:.75}
+  #mcl-lb-play{min-width:28px;display:flex;align-items:center;justify-content:center}
+  #mcl-lb-play svg{display:block}
+  #mcl-lb-play .mcl-ic-pause{display:none}
+  #mcl-lb-play.is-playing .mcl-ic-play{display:none}
+  #mcl-lb-play.is-playing .mcl-ic-pause{display:block}
+  #mcl-lb-seek{flex:1;accent-color:#F7DCDC;height:3px;cursor:pointer;min-width:80px}
+  #mcl-lb-time{color:rgba(252,252,253,.8);font-size:11px;letter-spacing:.08em;min-width:88px;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .mcl-lb-close{position:absolute;top:14px;right:18px;background:none;border:none;font-size:38px;line-height:1;color:#FCFCFD;cursor:pointer;font-family:Jost,Helvetica,Arial,sans-serif;padding:6px;z-index:2}
+  .mcl-lb-count{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:rgba(252,252,253,.85);font-size:11px;letter-spacing:.34em}
+  /* adaptive show theme — gradient + text colors follow the centered cover */
+  @property --shc1{syntax:'<color>';inherits:true;initial-value:#FCFCFD}
+  @property --shc2{syntax:'<color>';inherits:true;initial-value:#FCFCFD}
+  #mcl-shows{--shtop:#0C0C0C;--shbot:#0C0C0C;--shbotsub:rgba(12,12,12,.6);background:linear-gradient(168deg,var(--shc1) 0%,var(--shc2) 100%);transition:--shc1 1.4s ease,--shc2 1.4s ease}
+  #mcl-shows .mcl-sechead h2{color:var(--shtop);transition:color 1s ease}
+  #mcl-shows .mcl-rule{background:var(--shtop);transition:background-color 1s ease}
+  #mcl-shows .mcl-sechead .mcl-intro{color:var(--shtop);opacity:.75;transition:color 1s ease}
+  #mcl-shows .mcl-showinfo h3{color:var(--shbot);transition:color 1s ease}
+  #mcl-shows .mcl-showinfo .mcl-meta{color:var(--shbotsub);transition:color 1s ease}
+  #mcl-shows .mcl-showinfo .mcl-link{color:var(--shbot);border-color:var(--shbot);transition:color 1s ease,border-color 1s ease,opacity .25s}
+  #mcl-shows .mcl-arrow{color:var(--shbot);border-color:var(--shbotsub);background:transparent;transition:color 1s ease,border-color 1s ease}
+  #mcl-shows .mcl-arrow:hover{background:rgba(127,127,127,.18)}
+  /* mobile */
+  @media (max-width:767px){
+    .mcl-hero{height:78vh;min-height:520px}
+    .mcl-hero .mcl-arrow{display:none}
+    .mcl-caption{left:24px;right:24px;bottom:72px}
+    .mcl-showcar .mcl-arrow{width:38px;height:38px;font-size:18px}
+  }
+  /* gifting suite */
+  .mcl-suite-cap{margin:24px auto 0;max-width:660px;text-align:center;font-size:12px;letter-spacing:.06em;line-height:1.6;color:rgba(12,12,12,.55)}
+  .mcl-suite-cta{text-align:center}
+  .mcl-suite-cta a.mcl-list-cta{color:#FCFCFD;text-decoration:none}
+  /* selectivity */
+  .mcl-select{background:#FCFCFD;padding:130px 24px;text-align:center}
+  .mcl-select-inner{max-width:800px;margin:0 auto}
+  .mcl-select h2{margin:0;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(36px,4.6vw,64px);line-height:1.1;text-wrap:pretty}
+  .mcl-select p{margin:30px auto 0;max-width:620px;font-size:17px;font-weight:300;line-height:1.8;color:rgba(12,12,12,.72);text-wrap:pretty}
+  /* launch your show */
+  .mcl-launch-cta{display:inline-block;margin-top:42px;background:#F7DCDC;color:#0C0C0C!important;padding:17px 34px;font-size:11.5px;letter-spacing:.26em;border:none;cursor:pointer;font-family:Jost,Helvetica,Arial,sans-serif;font-weight:500}
+  .mcl-launch-cta:hover{opacity:.85!important}
+  /* newsletter */
+  .mcl-list{background:#F7DCDC;padding:112px 24px}
+  .mcl-list-inner{max-width:640px;margin:0 auto;text-align:center}
+  .mcl-list-inner .mcl-eyebrow{margin:0;font-size:10.5px;letter-spacing:.36em;text-indent:.36em;color:rgba(12,12,12,.55)}
+  .mcl-list-inner h2{margin:18px 0 0;color:#0C0C0C;font-family:'Baskervville',serif;font-weight:500;font-size:clamp(40px,4.6vw,60px);line-height:1.05}
+  .mcl-list-inner .mcl-dek{margin:22px 0 0;font-size:16.5px;font-weight:300;line-height:1.7;color:rgba(12,12,12,.7);text-wrap:pretty}
+  .mcl-list-cta{display:inline-block;margin-top:42px;background:#0C0C0C;color:#FCFCFD;border:none;cursor:pointer;padding:17px 36px;font-size:11.5px;letter-spacing:.26em;font-family:Jost,sans-serif;transition:opacity .25s}
+  .mcl-list-cta:hover{opacity:.85}
+  /* get-on-the-list inline form reveal */
+  .mcl-list-form{display:none;margin:46px auto 0;max-width:600px;background:#FCFCFD;padding:26px 20px;box-shadow:0 18px 60px rgba(12,12,12,.12)}
+  .mcl-list-form.is-open{display:block}
+  .mcl-list-form iframe{width:100%;border:none;min-height:620px}
+</style>
+</head>
+<body style="margin:0">
+<!-- global header -->
+<!-- The McCord List: global header -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baskervville:ital,wght@0,400..700;1,400..700&family=Jost:ital,wght@0,300..600;1,300..500&display=swap" rel="stylesheet">
+<style>
+  .mcl-header{margin:0;background:#FCFCFD;color:#0C0C0C;font-family:Jost,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4}
+  .mcl-header *{box-sizing:border-box}
+  .mcl-header a{color:#0C0C0C;text-decoration:none;transition:opacity .25s}
+  .mcl-header a:hover{opacity:.55}
+  .mcl-topbar{max-width:1360px;margin:0 auto;padding:20px 40px 0;display:flex;justify-content:space-between;align-items:center}
+  .mcl-topbar span,.mcl-topbar a{font-size:10.5px;letter-spacing:.32em;color:rgba(12,12,12,.55)}
+  .mcl-topbar a{color:#0C0C0C}
+  .mcl-masthead{text-align:center;padding:30px 24px 34px}
+  .mcl-logoimg{width:clamp(300px,46vw,620px);height:auto;display:block;margin:0 auto}
+  .mcl-nav{border-top:1px solid #0C0C0C;border-bottom:1px solid #0C0C0C;background:#FCFCFD}
+  .mcl-nav-inner{max-width:1360px;margin:0 auto;padding:0 24px;display:flex;justify-content:center;align-items:center;gap:clamp(22px,3.4vw,48px);flex-wrap:wrap}
+  .mcl-nav-inner a{display:block;padding:18px 0;font-size:12px;font-weight:500;letter-spacing:.24em}
+  .mcl-nav-inner a.mcl-cta{background:#F7DCDC;color:#0C0C0C;padding:9px 18px;margin:9px 0}
+  /* mobile burger */
+  .mcl-nav-mobile{display:none}
+  @media (max-width:767px){
+    .mcl-nav-inner{display:none}
+    .mcl-nav-mobile{display:flex;justify-content:space-between;align-items:center;padding:10px 20px}
+    .mcl-burger{background:none;border:none;padding:8px 8px 8px 0;cursor:pointer;display:flex;flex-direction:column;gap:5px}
+    .mcl-burger span{display:block;width:22px;height:2px;background:#0C0C0C}
+    .mcl-nav-mobile .mcl-cta{background:#F7DCDC;color:#0C0C0C;padding:9px 16px;font-size:11px;font-weight:500;letter-spacing:.24em}
+  }
+  .mcl-menu{position:fixed;inset:0;background:#FCFCFD;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:32px;opacity:0;pointer-events:none;transition:opacity .35s ease}
+  .mcl-menu.is-open{opacity:1;pointer-events:auto}
+  .mcl-menu a{font-size:15px;font-weight:500;letter-spacing:.3em;color:#0C0C0C}
+  .mcl-menu a.mcl-cta{background:#F7DCDC;color:#0C0C0C;padding:13px 24px;margin-top:10px}
+  /* show pages: tighten gap between hero poster and first section */
+  .hero + .show-section{padding-top:40px}
+  .mcl-menu-close{position:absolute;top:20px;right:22px;background:none;border:none;font-size:36px;line-height:1;color:#0C0C0C;cursor:pointer;font-family:Jost,Helvetica,Arial,sans-serif;padding:6px}
+</style>
+<header class="mcl-header">
+  <div class="mcl-topbar">
+    <span>LOS ANGELES</span>
+    <a href="https://themccordlist.com/#mcl-list">APPLY TO JOIN</a>
+  </div>
+  <div class="mcl-masthead">
+    <div><a href="https://themccordlist.com/" aria-label="The McCord List home"><img class="mcl-logoimg" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a70fb78a1aa89ccfe252d99.png&w=1240&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a70fb78a1aa89ccfe252d99.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The McCord List"></a></div>
+  </div>
+  <nav class="mcl-nav">
+    <div class="mcl-nav-inner">
+      <a class="mcl-watch" href="https://themccordlist.tv" target="_blank" rel="noopener">WATCH NOW</a>
+      <a href="https://themccordlist.com/#mcl-shows">SHOWS</a>
+      <a href="https://themccordlist.com/#mcl-select">HOST</a>
+      <a href="https://themccordlist.com/#mcl-events">HOLLYWOOD EXPERIENCES</a>
+      <a href="https://themccordlist.com/#mcl-the-lot">THE LOT</a>
+      <a href="https://themccordlist.com/#mcl-suite">THE SUITE</a>
+      <a class="mcl-cta" href="https://themccordlist.com/#mcl-list">APPLY TO THE NETWORK</a>
+    </div>
+    <div class="mcl-nav-mobile">
+      <button type="button" class="mcl-burger" id="mcl-burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <a class="mcl-cta" href="https://themccordlist.com/#mcl-list">APPLY</a>
+    </div>
+  </nav>
+  <div class="mcl-menu" id="mcl-menu">
+    <button type="button" class="mcl-menu-close" id="mcl-menu-close" aria-label="Close menu">&times;</button>
+    <a class="mcl-watch" href="https://themccordlist.tv" target="_blank" rel="noopener">WATCH NOW</a>
+    <a href="https://themccordlist.com/#mcl-shows">SHOWS</a>
+    <a href="https://themccordlist.com/#mcl-select">HOST</a>
+    <a href="https://themccordlist.com/#mcl-events">HOLLYWOOD EXPERIENCES</a>
+    <a href="https://themccordlist.com/#mcl-the-lot">THE LOT</a>
+    <a href="https://themccordlist.com/#mcl-suite">THE SUITE</a>
+    <a class="mcl-cta" href="https://themccordlist.com/#mcl-list">APPLY TO THE NETWORK</a>
+  </div>
+</header>
+<script>
+/* pin the nav to the top of the screen once it scrolls out of view;
+   uses position:fixed (not sticky) so GHL wrapper overflow can't break it */
+(function(){
+  // GHL can inject this script twice; run only once
+  if (window.__mclHeaderInit) return;
+  window.__mclHeaderInit = true;
+  var h = document.querySelector('.mcl-header');
+  var n = h.querySelector('.mcl-nav');
+  var sentinel = document.createElement('div');
+  n.parentNode.insertBefore(sentinel, n);
+  var sp = document.createElement('div');
+  sp.style.display = 'none';
+  n.parentNode.insertBefore(sp, n);
+  var stuck = false;
+  function stick(on){
+    if (on === stuck) return;
+    stuck = on;
+    if (on){
+      sp.style.height = n.offsetHeight + 'px';
+      sp.style.display = 'block';
+      n.style.position = 'fixed';
+      n.style.top = '0'; n.style.left = '0'; n.style.right = '0'; n.style.zIndex = '95';
+    } else {
+      sp.style.display = 'none';
+      n.style.position = ''; n.style.top = ''; n.style.left = ''; n.style.right = ''; n.style.zIndex = '';
+    }
+  }
+  function check(){ stick(sentinel.getBoundingClientRect().top < 0); }
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(check, {threshold:[0, 1]}).observe(sentinel);
+  }
+  window.addEventListener('scroll', check, {passive:true});
+  document.addEventListener('scroll', check, true);
+  var rzT;
+  window.addEventListener('resize', function(){
+    clearTimeout(rzT);
+    rzT = setTimeout(function(){ if (stuck) sp.style.height = n.offsetHeight + 'px'; check(); }, 150);
+  });
+  check();
+  // burger menu
+  var menu = document.getElementById('mcl-menu');
+  function setOpen(on){
+    menu.classList.toggle('is-open', on);
+    document.body.style.overflow = on ? 'hidden' : '';
+  }
+  document.getElementById('mcl-burger').addEventListener('click', function(){ setOpen(true); });
+  document.getElementById('mcl-menu-close').addEventListener('click', function(){ setOpen(false); });
+  Array.prototype.forEach.call(menu.querySelectorAll('a'), function(a){
+    a.addEventListener('click', function(e){
+      setOpen(false);
+      var i = a.href.indexOf('#');
+      var t = i > -1 ? document.querySelector(a.href.slice(i)) : null;
+      if (t){
+        e.preventDefault();
+        setTimeout(function(){ t.scrollIntoView({behavior:'smooth'}); }, 60);
+      }
+    });
+  });
+})();
+</script>
+
+
+<div class="mcl-site">
+
+
+  <section class="mcl-hero" id="mcl-hero">
+    <video id="mcl-reel-video" muted loop playsinline preload="none" poster="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a971b9fef6af944f0fcbedc.jpg&w=1920&output=webp&q=78" data-src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6abab486f6972e3b521d9887.mp4"></video>
+    <div class="mcl-hero-overlay"></div>
+    <div class="mcl-hero-copy">
+      <h1>Where Experts and Creators Become Television</h1>
+      <p>Show-powered businesses, made in Hollywood.</p>
+      <div class="mcl-hero-cta">
+        <a class="is-primary mcl-applylist" href="#mcl-list">APPLY TO THE NETWORK</a>
+        <a class="is-ghost" href="#mcl-select">EXPLORE HOST OPPORTUNITIES</a>
+      </div>
+    </div>
+    <a class="mcl-hero-scroll" href="#mcl-featured" aria-label="Scroll down">
+      <span>SCROLL</span>
+      <span class="mcl-hero-scroll-line"></span>
+    </a>
+  </section>
+
+
+  <section class="mcl-featured" id="mcl-featured">
+    <p class="mcl-kicker">FEATURED IN</p>
+    <div class="mcl-marquee" aria-label="Featured in">
+      <div class="mcl-marquee-track">
+        <div class="mcl-marquee-grp">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e34d2085f898befda2.png" alt="Marie Claire">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e30c09109fd561c5e5.png" alt="The Hills">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d0d.png" alt="Growing Up Chrisley">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e3fa8afa3be0b3219f.png" alt="The Real Housewives of Beverly Hills">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d08.png" alt="Entrepreneur">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d02.png" alt="Vogue">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d09.png" alt="Cosmopolitan">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e39caca3390499220e.png" alt="Glamour">
+        </div>
+        <div class="mcl-marquee-grp" aria-hidden="true">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e34d2085f898befda2.png" alt="Marie Claire">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e30c09109fd561c5e5.png" alt="The Hills">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d0d.png" alt="Growing Up Chrisley">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e3fa8afa3be0b3219f.png" alt="The Real Housewives of Beverly Hills">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d08.png" alt="Entrepreneur">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d02.png" alt="Vogue">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e360a7a52fdc422d09.png" alt="Cosmopolitan">
+          <img decoding="async" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a0355e39caca3390499220e.png" alt="Glamour">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mcl-showcase">
+    <div class="mcl-showcase-head">
+      <h2>See The McCord List <em>in action.</em></h2>
+      <p>A look inside the network &mdash; the shows, the studio, and the hosts building <strong>media brands that grow their businesses.</strong></p>
+    </div>
+    <div class="mcl-showcase-frame">
+      <video id="mcl-showcase-video" muted loop playsinline preload="none" data-src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9f37d8db940b68053cb8bd.mp4"></video>
+      <button type="button" class="mcl-showcase-sound" id="mcl-showcase-sound">TAP FOR SOUND</button>
+    </div>
+  </section>
+
+
+
+
+  <section class="mcl-platforms">
+    <p class="mcl-kicker">STREAMING ACROSS</p>
+    <div class="mcl-marquee" aria-label="Available platforms">
+      <div class="mcl-marquee-track">
+        <div class="mcl-marquee-grp">
+          <span class="mcl-plat-text">NATIONAL BROADCAST</span>
+          <img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/USA_Today_%282020-01-29%29.svg/500px-USA_Today_%282020-01-29%29.svg.png" alt="USA Today">
+          <a href="https://channelstore.roku.com/details/862fc81ca0e18f12b3abd29f1a1cd869:bc5683190c45090a9a83711e6ec2c503/the-mccord-list-tv" target="_blank" rel="noopener" aria-label="Roku TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Roku_logo.svg/500px-Roku_logo.svg.png" alt="Roku TV"></a>
+          <a href="https://www.amazon.com/gp/product/B0G2XP37LT" target="_blank" rel="noopener" aria-label="Amazon Fire TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Amazon_Fire_TV_2024.svg/500px-Amazon_Fire_TV_2024.svg.png" alt="Amazon Fire TV"></a>
+          <a href="https://www.samsung.com/us/tvs/smart-tv/samsung-tv-apps-detail/?appId=3202510041842" target="_blank" rel="noopener" aria-label="Samsung TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Samsung_Black_icon.svg/500px-Samsung_Black_icon.svg.png" alt="Samsung TV"></a>
+          <a href="https://apps.apple.com/us/app/the-mccord-list-tv/id6756036324" target="_blank" rel="noopener" aria-label="Apple TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Apple_TV_logo.svg/500px-Apple_TV_logo.svg.png" alt="Apple TV"></a>
+          <a href="https://themccordlist.tv/programs/the-mccord-list-today" target="_blank" rel="noopener" aria-label="The McCord List TV"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9af68b2b09fd4da2e6114f.png&w=400&output=webp&q=80" alt="The McCord List TV"></a>
+        </div>
+        <div class="mcl-marquee-grp" aria-hidden="true">
+          <span class="mcl-plat-text">NATIONAL BROADCAST</span>
+          <img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/USA_Today_%282020-01-29%29.svg/500px-USA_Today_%282020-01-29%29.svg.png" alt="USA Today">
+          <a href="https://channelstore.roku.com/details/862fc81ca0e18f12b3abd29f1a1cd869:bc5683190c45090a9a83711e6ec2c503/the-mccord-list-tv" target="_blank" rel="noopener" aria-label="Roku TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Roku_logo.svg/500px-Roku_logo.svg.png" alt="Roku TV"></a>
+          <a href="https://www.amazon.com/gp/product/B0G2XP37LT" target="_blank" rel="noopener" aria-label="Amazon Fire TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Amazon_Fire_TV_2024.svg/500px-Amazon_Fire_TV_2024.svg.png" alt="Amazon Fire TV"></a>
+          <a href="https://www.samsung.com/us/tvs/smart-tv/samsung-tv-apps-detail/?appId=3202510041842" target="_blank" rel="noopener" aria-label="Samsung TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Samsung_Black_icon.svg/500px-Samsung_Black_icon.svg.png" alt="Samsung TV"></a>
+          <a href="https://apps.apple.com/us/app/the-mccord-list-tv/id6756036324" target="_blank" rel="noopener" aria-label="Apple TV"><img decoding="async" loading="lazy" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Apple_TV_logo.svg/500px-Apple_TV_logo.svg.png" alt="Apple TV"></a>
+          <a href="https://themccordlist.tv/programs/the-mccord-list-today" target="_blank" rel="noopener" aria-label="The McCord List TV"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9af68b2b09fd4da2e6114f.png&w=400&output=webp&q=80" alt="The McCord List TV"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mcl-hero" id="mcl-slideshow">
+    <div class="mcl-slide is-on">
+      <img decoding="async" loading="lazy" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a971b9fef6af944f0fcbedc.jpg&w=1920&output=webp&q=75" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a971b9fef6af944f0fcbedc.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The McCord List Today studio set">
+      <div class="mcl-scrim"></div>
+      <div class="mcl-caption">
+        <span class="mcl-chip">SHOWS</span>
+        <h2>The McCord List Today, Streaming Now</h2>
+        <p>New episodes weekly, wherever you watch.</p>
+        <a href="#mcl-shows">WATCH NOW</a>
+      </div>
+    </div>
+    <div class="mcl-slide">
+      <img decoding="async" loading="lazy" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F69f0a8e8c5c98840c83c236f.jpg&w=1920&output=webp&q=75" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/69f0a8e8c5c98840c83c236f.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="MBS Media Campus, home of The McCord List">
+      <div class="mcl-scrim"></div>
+      <div class="mcl-caption">
+        <span class="mcl-chip">THE LOT</span>
+        <h2>Culture, Made Here: A New Season Opens on The Lot</h2>
+        <p>Inside MBS Media Campus, home of Hollywood&rsquo;s biggest productions.</p>
+        <a href="#mcl-the-lot">EXPLORE THE LOT</a>
+      </div>
+    </div>
+    <div class="mcl-slide">
+      <img decoding="async" loading="lazy" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a7cd8eaf6ac3438f88e9f2e.jpg&w=1920&output=webp&q=75" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a7cd8eaf6ac3438f88e9f2e.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Rachel McCord interviewing a guest on stage">
+      <div class="mcl-scrim"></div>
+      <div class="mcl-caption">
+        <span class="mcl-chip">EXPERIENCES</span>
+        <h2>Powerhouses, Front Row: From the Carpet to the Convention Floor</h2>
+        <p>Award season, national television, and Hollywood&rsquo;s biggest live experiences.</p>
+        <a href="#mcl-events">SEE THE EXPERIENCES</a>
+      </div>
+    </div>
+    <button type="button" class="mcl-arrow" style="left:26px" aria-label="Previous slide" id="mcl-prev">&#8249;</button>
+    <button type="button" class="mcl-arrow" style="right:26px" aria-label="Next slide" id="mcl-next">&#8250;</button>
+    <div class="mcl-dots" id="mcl-dots">
+      <button type="button" class="is-on" aria-label="Slide 1"></button>
+      <button type="button" aria-label="Slide 2"></button>
+      <button type="button" aria-label="Slide 3"></button>
+    </div>
+    <div class="mcl-counter" id="mcl-counter">01 / 03</div>
+  </section>
+
+  <section class="mcl-section" id="mcl-the-lot">
+    <div class="mcl-wrap">
+      <div class="mcl-sechead">
+        <div class="mcl-rule"></div>
+        <h2>THE LOT</h2>
+        <p class="mcl-sub">MBS MEDIA CAMPUS · MANHATTAN BEACH, CALIFORNIA</p>
+        <p class="mcl-intro">The McCord List tapes at MBS Media Campus in Manhattan Beach &mdash; the studio lot built by Roy E. Disney, Walt&rsquo;s nephew.</p>
+      </div>
+      <div class="mcl-grid3">
+        <article class="mcl-card">
+          <div class="mcl-45"><img decoding="async" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a95b221e68555d6d5edb26f.jpg&w=1000&output=webp&q=75" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a95b221e68555d6d5edb26f.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" loading="lazy" alt="Sound stages and backlot street at MBS Media Campus" loading="lazy"></div>
+          <p class="mcl-kicker">THE STAGES</p>
+          <p class="mcl-cap">The studio streets and sound stages inside the gates of MBS Media Campus.</p>
+        </article>
+        <article class="mcl-card">
+          <div class="mcl-45"><img decoding="async" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2FPUbb7JuduHwFjZdHgrwX%2Fmedia%2F6a98769fcf28d633650b30e7.jpg&w=1000&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/PUbb7JuduHwFjZdHgrwX/media/6a98769fcf28d633650b30e7.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" loading="lazy" alt="Inside a sound stage at MBS Media Campus" loading="lazy"></div>
+          <p class="mcl-kicker">THE HISTORY</p>
+          <p class="mcl-cap">Where Hollywood&rsquo;s biggest productions come to life.</p>
+        </article>
+        <article class="mcl-card">
+          <div class="mcl-45"><img decoding="async" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a987a97a1de6b8a2277bf3b.jpg&w=1000&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a987a97a1de6b8a2277bf3b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" loading="lazy" alt="Behind the scenes on The McCord List Today set" loading="lazy"></div>
+          <p class="mcl-kicker">THE SET</p>
+          <p class="mcl-cap">Where The McCord List Today is made.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="mcl-section" id="mcl-events">
+    <div class="mcl-wrap">
+      <div class="mcl-sechead">
+        <div class="mcl-rule"></div>
+        <h2>HOLLYWOOD EXPERIENCES</h2>
+        <p class="mcl-intro">Welcome to the Hollywood you&rsquo;ve never heard of &mdash; a community of love, support, and unforgettable experiences that make you soar.</p>
+      </div>
+      <div class="mcl-album">
+        <div class="mcl-album-head">
+          <span class="mcl-chip">EXPERIENCES</span>
+          <h3>Celebrities &amp; Creators</h3>
+          <p class="mcl-meta">48 PHOTOS · 5 VIDEOS</p>
+        </div>
+        <div class="mcl-album-grid is-collapsed">
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96db41fac7854efe08d7d2.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96db41fac7854efe08d7d2.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96db41fac7854efe08d7d2.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96db41fac7854efe08d7d2.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 1"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca5028f06327141c1f9b.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca5028f06327141c1f9b.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca5028f06327141c1f9b.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca5028f06327141c1f9b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 2"></button>
+          <button type="button" class="mcl-albumthumb is-video" data-video="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e3249019a6088a66db41.mov" aria-label="Play video"><video muted playsinline preload="metadata" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e3249019a6088a66db41.mov#t=0.1"></video></button>
+          <button type="button" class="mcl-albumthumb is-video" data-video="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e324fac7854efe09a7e6.mov" aria-label="Play video"><video muted playsinline preload="metadata" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e324fac7854efe09a7e6.mov#t=0.1"></video></button>
+          <button type="button" class="mcl-albumthumb is-video" data-video="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e324a227fec6bd921af0.mov" aria-label="Play video"><video muted playsinline preload="metadata" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e324a227fec6bd921af0.mov#t=0.1"></video></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f72ae01952f7423436.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f72ae01952f7423436.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f72ae01952f7423436.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f72ae01952f7423436.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 3"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7fac7854efe0f56d0.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7fac7854efe0f56d0.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7fac7854efe0f56d0.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7fac7854efe0f56d0.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 4"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9de28f06327141d6f96.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9de28f06327141d6f96.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9de28f06327141d6f96.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9de28f06327141d6f96.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 5"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7a227fec6bd97c837.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7a227fec6bd97c837.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7a227fec6bd97c837.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7a227fec6bd97c837.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 6"></button>
+          <button type="button" class="mcl-albumthumb is-video" data-video="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a98ac300ba3728cefe0e276.mp4" aria-label="Play video"><video muted playsinline preload="metadata" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a98ac300ba3728cefe0e276.mp4#t=0.1"></video></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7a227fec6bd97c841.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7a227fec6bd97c841.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7a227fec6bd97c841.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7a227fec6bd97c841.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 7"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4728f06327141c1ef9.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4728f06327141c1ef9.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4728f06327141c1ef9.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4728f06327141c1ef9.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 8"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca47d47ab15319ff3b63.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca47d47ab15319ff3b63.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca47d47ab15319ff3b63.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca47d47ab15319ff3b63.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 9"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca472ae01952f73a4009.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca472ae01952f73a4009.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca472ae01952f73a4009.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca472ae01952f73a4009.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 10"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3d47ab153190730fb.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3d47ab153190730fb.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3d47ab153190730fb.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3d47ab153190730fb.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 11"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4a28f06327141c1f0b.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4a28f06327141c1f0b.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4a28f06327141c1f0b.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4a28f06327141c1f0b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 12"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fad47ab15319073240.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fad47ab15319073240.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fad47ab15319073240.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fad47ab15319073240.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 13"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3bfac7854efe075a9b.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3bfac7854efe075a9b.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3bfac7854efe075a9b.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3bfac7854efe075a9b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 14"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca12a227fec6bd8fccf3.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca12a227fec6bd8fccf3.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca12a227fec6bd8fccf3.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca12a227fec6bd8fccf3.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 15"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4128f06327141c1e71.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4128f06327141c1e71.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4128f06327141c1e71.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4128f06327141c1e71.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 16"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca41389c8c461404ed38.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca41389c8c461404ed38.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca41389c8c461404ed38.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca41389c8c461404ed38.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 17"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca42c7069f4fc798689e.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca42c7069f4fc798689e.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca42c7069f4fc798689e.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca42c7069f4fc798689e.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 18"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca33c7069f4fc79867aa.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca33c7069f4fc79867aa.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca33c7069f4fc79867aa.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca33c7069f4fc79867aa.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 19"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2fa227fec6bd8fcf69.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2fa227fec6bd8fcf69.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2fa227fec6bd8fcf69.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2fa227fec6bd8fcf69.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 20"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2da227fec6bd8fcf55.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2da227fec6bd8fcf55.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2da227fec6bd8fcf55.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2da227fec6bd8fcf55.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 21"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2dc7069f4fc79866f8.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2dc7069f4fc79866f8.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2dc7069f4fc79866f8.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2dc7069f4fc79866f8.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 22"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2c28f06327141c1c87.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2c28f06327141c1c87.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2c28f06327141c1c87.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2c28f06327141c1c87.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 23"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2cd47ab15319ff39bf.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2cd47ab15319ff39bf.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2cd47ab15319ff39bf.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2cd47ab15319ff39bf.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 24"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2528f06327141c1b83.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2528f06327141c1b83.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2528f06327141c1b83.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2528f06327141c1b83.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 25"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca24d47ab15319ff38bf.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca24d47ab15319ff38bf.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca24d47ab15319ff38bf.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca24d47ab15319ff38bf.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 26"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca26c7069f4fc7986642.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca26c7069f4fc7986642.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca26c7069f4fc7986642.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca26c7069f4fc7986642.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 27"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca25d47ab15319ff38d7.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca25d47ab15319ff38d7.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca25d47ab15319ff38d7.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca25d47ab15319ff38d7.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 28"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca22c7069f4fc79865fc.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca22c7069f4fc79865fc.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca22c7069f4fc79865fc.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca22c7069f4fc79865fc.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 29"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2228f06327141c1b47.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2228f06327141c1b47.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2228f06327141c1b47.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2228f06327141c1b47.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 30"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca21fac7854efe0757f8.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca21fac7854efe0757f8.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca21fac7854efe0757f8.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca21fac7854efe0757f8.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 31"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca22fac7854efe075828.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca22fac7854efe075828.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca22fac7854efe075828.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca22fac7854efe075828.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 32"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f389c8c461404eaa4.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f389c8c461404eaa4.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f389c8c461404eaa4.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f389c8c461404eaa4.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 33"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1528f06327141c1a47.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1528f06327141c1a47.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1528f06327141c1a47.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1528f06327141c1a47.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 34"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ed47ab15319ff36c5.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ed47ab15319ff36c5.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ed47ab15319ff36c5.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ed47ab15319ff36c5.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 35"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96da9f389c8c4614064d56.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96da9f389c8c4614064d56.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96da9f389c8c4614064d56.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96da9f389c8c4614064d56.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 36"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96da9f9b2eaead5c1a1b98.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96da9f9b2eaead5c1a1b98.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96da9f9b2eaead5c1a1b98.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96da9f9b2eaead5c1a1b98.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 37"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9e7c7069f4fc799b1df.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9e7c7069f4fc799b1df.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9e7c7069f4fc799b1df.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9e7c7069f4fc799b1df.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 38"></button>
+          <button type="button" class="mcl-albumthumb is-video" data-video="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e3249019a6088a66db45.mp4" aria-label="Play video"><video muted playsinline preload="metadata" src="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96e3249019a6088a66db45.mp4#t=0.1"></video></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9e0d47ab153190081b8.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9e0d47ab153190081b8.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96d9e0d47ab153190081b8.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96d9e0d47ab153190081b8.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 39"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96db419019a6088a66010f.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96db419019a6088a66010f.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96db419019a6088a66010f.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96db419019a6088a66010f.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 40"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fa28f0632714241a3e.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fa28f0632714241a3e.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fa28f0632714241a3e.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fa28f0632714241a3e.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 41"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f328f0632714241948.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f328f0632714241948.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f328f0632714241948.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f328f0632714241948.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 42"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3389c8c46140ce259.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3389c8c46140ce259.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3389c8c46140ce259.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3389c8c46140ce259.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 43"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3a227fec6bd97c7cb.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3a227fec6bd97c7cb.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f3a227fec6bd97c7cb.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f3a227fec6bd97c7cb.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 44"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f328f0632714241951.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f328f0632714241951.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f328f0632714241951.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f328f0632714241951.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 45"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7c7069f4fc7a05990.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7c7069f4fc7a05990.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715f7c7069f4fc7a05990.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715f7c7069f4fc7a05990.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 46"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fa9019a6088a6c9499.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fa9019a6088a6c9499.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9715fa9019a6088a6c9499.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9715fa9019a6088a6c9499.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 47"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca45d47ab15319ff3b23.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca45d47ab15319ff3b23.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca45d47ab15319ff3b23.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca45d47ab15319ff3b23.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Celebrities &amp; Creators, photo 48"></button>
+        </div>
+        <div class="mcl-album-more"><button type="button" class="mcl-link">VIEW ALL 53</button></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="mcl-section" id="mcl-suite">
+    <div class="mcl-wrap">
+      <div class="mcl-sechead">
+        <div class="mcl-rule"></div>
+        <h2>THE SUITE</h2>
+        <p class="mcl-intro">The store (powered by ViralBrand) where celebrities and Hollywood&rsquo;s top creators shop the brands on the List. Brand membership is application-only &mdash; not every brand makes the List.</p>
+      </div>
+      <div class="mcl-album">
+        <div class="mcl-album-head">
+          <span class="mcl-chip">LUXURY</span>
+          <h3>The Celebrity Gifting Suite</h3>
+          <p class="mcl-meta">THE McCORD LIST STUDIOS AT MBS MEDIA CAMPUS · MANHATTAN BEACH, CALIFORNIA</p>
+          <p class="mcl-meta" style="margin-top:30px">52 PHOTOS</p>
+        </div>
+        <div class="mcl-album-grid is-collapsed">
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca46c7069f4fc7986911.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca46c7069f4fc7986911.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca46c7069f4fc7986911.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca46c7069f4fc7986911.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 1"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca469019a6088a648dc4.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca469019a6088a648dc4.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca469019a6088a648dc4.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca469019a6088a648dc4.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 2"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4c2ae01952f73a405a.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4c2ae01952f73a405a.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4c2ae01952f73a405a.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4c2ae01952f73a405a.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 3"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4dc7069f4fc79869ab.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4dc7069f4fc79869ab.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca4dc7069f4fc79869ab.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca4dc7069f4fc79869ab.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 4"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1b28f06327141c1abb.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1b28f06327141c1abb.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1b28f06327141c1abb.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1b28f06327141c1abb.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 5"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca122ae01952f73a3c76.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca122ae01952f73a3c76.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca122ae01952f73a3c76.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca122ae01952f73a3c76.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 6"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca169019a6088a648a86.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca169019a6088a648a86.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca169019a6088a648a86.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca169019a6088a648a86.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 7"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ec7069f4fc79863fe.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ec7069f4fc79863fe.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ec7069f4fc79863fe.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ec7069f4fc79863fe.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 8"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1bc7069f4fc7986544.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1bc7069f4fc7986544.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1bc7069f4fc7986544.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1bc7069f4fc7986544.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 9"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca15c7069f4fc79864a2.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca15c7069f4fc79864a2.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca15c7069f4fc79864a2.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca15c7069f4fc79864a2.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 10"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0e9b2eaead5c18b131.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0e9b2eaead5c18b131.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0e9b2eaead5c18b131.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0e9b2eaead5c18b131.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 11"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1c9b2eaead5c18b26c.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1c9b2eaead5c18b26c.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1c9b2eaead5c18b26c.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1c9b2eaead5c18b26c.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 12"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1fa227fec6bd8fce01.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1fa227fec6bd8fce01.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1fa227fec6bd8fce01.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1fa227fec6bd8fce01.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 13"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f2ae01952f73a3d58.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f2ae01952f73a3d58.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f2ae01952f73a3d58.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f2ae01952f73a3d58.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 14"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3728f06327141c1daf.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3728f06327141c1daf.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3728f06327141c1daf.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3728f06327141c1daf.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 15"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3fa227fec6bd8fd07b.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3fa227fec6bd8fd07b.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3fa227fec6bd8fd07b.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3fa227fec6bd8fd07b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 16"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca40389c8c461404ed1d.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca40389c8c461404ed1d.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca40389c8c461404ed1d.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca40389c8c461404ed1d.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 17"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3b28f06327141c1e0b.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3b28f06327141c1e0b.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3b28f06327141c1e0b.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3b28f06327141c1e0b.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 18"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca382ae01952f73a3f22.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca382ae01952f73a3f22.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca382ae01952f73a3f22.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca382ae01952f73a3f22.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 19"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3ec7069f4fc798685f.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3ec7069f4fc798685f.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3ec7069f4fc798685f.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3ec7069f4fc798685f.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 20"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3a9019a6088a648cd0.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3a9019a6088a648cd0.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3a9019a6088a648cd0.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3a9019a6088a648cd0.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 21"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca37389c8c461404ec64.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca37389c8c461404ec64.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca37389c8c461404ec64.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca37389c8c461404ec64.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 22"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca36d47ab15319ff3a5f.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca36d47ab15319ff3a5f.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca36d47ab15319ff3a5f.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca36d47ab15319ff3a5f.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 23"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca36c7069f4fc79867e6.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca36c7069f4fc79867e6.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca36c7069f4fc79867e6.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca36c7069f4fc79867e6.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 24"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca369b2eaead5c18b484.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca369b2eaead5c18b484.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca369b2eaead5c18b484.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca369b2eaead5c18b484.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 25"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca34389c8c461404ec40.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca34389c8c461404ec40.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca34389c8c461404ec40.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca34389c8c461404ec40.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 26"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca339b2eaead5c18b46e.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca339b2eaead5c18b46e.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca339b2eaead5c18b46e.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca339b2eaead5c18b46e.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 27"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca32a227fec6bd8fcfad.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca32a227fec6bd8fcfad.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca32a227fec6bd8fcfad.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca32a227fec6bd8fcfad.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 28"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca32c7069f4fc7986794.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca32c7069f4fc7986794.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca32c7069f4fc7986794.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca32c7069f4fc7986794.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 29"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3128f06327141c1cee.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3128f06327141c1cee.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca3128f06327141c1cee.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca3128f06327141c1cee.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 30"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca30fac7854efe075a01.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca30fac7854efe075a01.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca30fac7854efe075a01.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca30fac7854efe075a01.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 31"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2f28f06327141c1cc7.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2f28f06327141c1cc7.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2f28f06327141c1cc7.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2f28f06327141c1cc7.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 32"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca30389c8c461404ebd0.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca30389c8c461404ebd0.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca30389c8c461404ebd0.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca30389c8c461404ebd0.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 33"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2fa227fec6bd8fcf5f.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2fa227fec6bd8fcf5f.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2fa227fec6bd8fcf5f.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2fa227fec6bd8fcf5f.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 34"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2e389c8c461404eb9e.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2e389c8c461404eb9e.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2e389c8c461404eb9e.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2e389c8c461404eb9e.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 35"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2cef6af944f0f3bbae.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2cef6af944f0f3bbae.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2cef6af944f0f3bbae.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2cef6af944f0f3bbae.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 36"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2b9019a6088a648be6.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2b9019a6088a648be6.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2b9019a6088a648be6.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2b9019a6088a648be6.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 37"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2afac7854efe07597b.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2afac7854efe07597b.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2afac7854efe07597b.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2afac7854efe07597b.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 38"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2a2ae01952f73a3e27.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2a2ae01952f73a3e27.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2a2ae01952f73a3e27.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2a2ae01952f73a3e27.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 39"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca28ef6af944f0f3bb50.jpeg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca28ef6af944f0f3bb50.jpeg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca28ef6af944f0f3bb50.jpeg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca28ef6af944f0f3bb50.jpeg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 40"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca299019a6088a648bd0.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca299019a6088a648bd0.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca299019a6088a648bd0.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca299019a6088a648bd0.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 41"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca292ae01952f73a3e0a.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca292ae01952f73a3e0a.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca292ae01952f73a3e0a.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca292ae01952f73a3e0a.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 42"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2828f06327141c1c29.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2828f06327141c1c29.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2828f06327141c1c29.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2828f06327141c1c29.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 43"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca27d47ab15319ff3907.png&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca27d47ab15319ff3907.png"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca27d47ab15319ff3907.png&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca27d47ab15319ff3907.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 44"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2828f06327141c1c0f.png&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2828f06327141c1c0f.png"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2828f06327141c1c0f.png&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2828f06327141c1c0f.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 45"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca25389c8c461404eb1c.png&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca25389c8c461404eb1c.png"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca25389c8c461404eb1c.png&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca25389c8c461404eb1c.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 46"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2228f06327141c1b3d.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2228f06327141c1b3d.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca2228f06327141c1b3d.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca2228f06327141c1b3d.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 47"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f28f06327141c1b05.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f28f06327141c1b05.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca1f28f06327141c1b05.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca1f28f06327141c1b05.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 48"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca16389c8c461404e9e6.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca16389c8c461404e9e6.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca16389c8c461404e9e6.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca16389c8c461404e9e6.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 49"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca122ae01952f73a3c5a.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca122ae01952f73a3c5a.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca122ae01952f73a3c5a.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca122ae01952f73a3c5a.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 50"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ea227fec6bd8fcc90.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ea227fec6bd8fcc90.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0ea227fec6bd8fcc90.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0ea227fec6bd8fcc90.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 51"></button>
+          <button type="button" class="mcl-albumthumb" data-full="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0e9019a6088a6489ab.jpg&w=1600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0e9019a6088a6489ab.jpg"><img decoding="async" loading="lazy" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96ca0e9019a6088a6489ab.jpg&w=900&output=webp&q=82" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96ca0e9019a6088a6489ab.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Celebrity Gifting Suite, photo 52"></button>
+        </div>
+        <p class="mcl-suite-cap">Moments from across our world &mdash; campaigns, productions, gifting, and events with the celebrities and creators in our network.</p>
+        <div class="mcl-album-more"><button type="button" class="mcl-link">VIEW ALL 52 PHOTOS</button></div>
+      </div>
+      <div class="mcl-suite-cta"><a class="mcl-list-cta" href="https://viralbrand.com/" target="_blank" rel="noopener">APPLY FOR BRAND MEMBERSHIP</a></div>
+    </div>
+  </section>
+
+
+  <section style="padding:0 24px 100px">
+    <div class="mcl-wrap mcl-cover">
+      <div class="mcl-34"><a href="https://www.dailymail.com/lifestyle/article-11982073/Branding-expert-Rachel-McCord-shares-tips-launching-running-business.html" target="_blank" rel="noopener"><img decoding="async" class="mcl-fill" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a95a8fdd931dc0751412144.jpg&w=1000&output=webp&q=75" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a95a8fdd931dc0751412144.jpg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" loading="lazy" alt="Rachel McCord, founder of The McCord List" loading="lazy"></a></div>
+      <div>
+        <span class="mcl-chip">MASTER BRANDING</span>
+        <h2>From $93 to Master of Branding</h2>
+        <p class="mcl-dek">In an exclusive with DailyMail.com, Rachel McCord opens her playbook for launching and running a business: start today, face your doubts head on, narrow your focus and win, and stay plugged into your why.</p>
+        <a class="mcl-link" href="https://www.dailymail.com/lifestyle/article-11982073/Branding-expert-Rachel-McCord-shares-tips-launching-running-business.html" target="_blank" rel="noopener">READ THE EXCLUSIVE</a>
+      </div>
+    </div>
+  </section>
+  <section class="mcl-section" id="mcl-shows" style="padding-bottom:72px">
+    <div class="mcl-wrap">
+      <div class="mcl-sechead" style="margin-bottom:56px">
+        <button type="button" class="mcl-showlist-toggle" id="mcl-showlist-toggle">FULL LIST</button>
+        <div class="mcl-rule"></div>
+        <h2>SHOWS</h2>
+        <p class="mcl-intro">Original media properties built around experts worth knowing. Meet the growing The McCord List lineup.</p>
+        <div class="mcl-showlist" id="mcl-showlist"></div>
+      </div>
+      <div class="mcl-showcar" id="mcl-showcar">
+        <button type="button" class="mcl-arrow" style="left:10px" aria-label="Previous show" id="mcl-show-prev">&#8249;</button>
+        <div class="mcl-showtrack" id="mcl-showtrack">
+          <div class="mcl-showcover is-on"><img decoding="async" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a96c77428f06327141be8f9.svg&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a96c77428f06327141be8f9.svg" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The McCord List Today with Rachel McCord"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a276b5649e55f8519bc0dd8.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a276b5649e55f8519bc0dd8.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Dear Dr. Charryse with Charryse Johnson"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a2754d3d91f654725b63fc1.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a2754d3d91f654725b63fc1.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Drama Diet with Lisa Stuart"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a2754c5d91f654725b63f2b.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a2754c5d91f654725b63f2b.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Taylor Taylor Taylor with Taylor Brooke"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a2754fa0de795fc13115a5e.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a2754fa0de795fc13115a5e.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Redefining Possible with Peyton Hoffman"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a277134fc95b24549ce8b01.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a277134fc95b24549ce8b01.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="In Heels with Keni Silva"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a5fd4b828b4c07e406cc073.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a5fd4b828b4c07e406cc073.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Profit By Design with Maya Mihajlovic"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a27827449e55f8519bd8eb4.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a27827449e55f8519bd8eb4.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Soulful Career Calling with Kasi Beaney"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a275b2a2db4a9d19ae2f78a.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a275b2a2db4a9d19ae2f78a.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Book Club with Ruth Klein"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a27715e19b4ff338beae967.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a27715e19b4ff338beae967.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The Melina Method with Melina Vlahos"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a27600cf607d4002bd86e15.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a27600cf607d4002bd86e15.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="What Comes Next with Nancy Steiner"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a2754faaa68f9b540bb4b01.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a2754faaa68f9b540bb4b01.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Women Helping Women with Christina Rowe"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a2a0edc01817220451187de.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a2a0edc01817220451187de.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Redesign Your Life with Rey III Viquez"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a9887cbefeed0ae259fabc8.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a9887cbefeed0ae259fabc8.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Stop Pretending You&rsquo;re Fine with Krista Rooney"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a622ff5fb06386ede6ab5e0.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a622ff5fb06386ede6ab5e0.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="My Midlife Era with Julie Waas"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a98bd8d0ba3728cefe1e84f.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a98bd8d0ba3728cefe1e84f.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="Behind The Label with LeiLani"></div>
+          <div class="mcl-showcover"><img decoding="async" loading="lazy" class="mcl-fill" crossorigin="anonymous" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a596d7cbaf5f6da40db5cf3.png&w=1200&output=webp&q=78" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a596d7cbaf5f6da40db5cf3.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="ViralBrand with Rick Schirmer"></div>
+        </div>
+        <button type="button" class="mcl-arrow" style="right:10px" aria-label="Next show" id="mcl-show-next">&#8250;</button>
+      </div>
+      <div class="mcl-showinfo" id="mcl-showinfo">
+        <h3 id="mcl-show-title">The McCord List Today</h3>
+        <p class="mcl-meta" id="mcl-show-meta">NATIONALLY SYNDICATED · NEW EPISODES WEEKLY</p>
+        <div class="mcl-showlinks">
+          <a class="mcl-link" id="mcl-show-learn" target="_blank" rel="noopener" href="https://themccordlist.com/themccordlisttoday">LEARN MORE</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="mcl-select" id="mcl-select">
+    <div class="mcl-select-inner">
+      <h2>Not every show belongs on The McCord List.</h2>
+      <p>We work with a select group of experts, founders and influential voices to develop original media properties from our Manhattan Beach studio.</p>
+      <p>If you believe your expertise deserves a bigger platform, apply to join the network.</p>
+      <a class="mcl-launch-cta mcl-applylist" href="#mcl-list">APPLY TO THE NETWORK</a>
+    </div>
+  </section>
+
+
+
+  <section class="mcl-list" id="mcl-list">
+    <div class="mcl-list-inner">
+      <p class="mcl-eyebrow">THE LIST</p>
+      <h2>Apply to the List.</h2>
+      <p class="mcl-dek">Not everyone makes the List. Tell us where you want in &mdash; Hollywood experiences, host opportunities, brand membership in the Gifting Suite, special programs, or a seat on the guest couch. Every application is reviewed.</p>
+      <button type="button" class="mcl-list-cta" id="mcl-list-open">APPLY TO THE LIST</button>
+      <div class="mcl-list-form" id="mcl-list-form">
+        <iframe
+    src="https://api.leadconnectorhq.com/widget/form/gzlqPIRLHvaM6WTNGgI0"
+    style="width:100%;height:100%;border:none;border-radius:8px"
+    id="inline-gzlqPIRLHvaM6WTNGgI0"
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-trigger-value=""
+    data-activation-type="alwaysActivated"
+    data-activation-value=""
+    data-deactivation-type="neverDeactivate"
+    data-deactivation-value=""
+    data-form-name="Get on The List"
+    data-height="899"
+    data-layout-iframe-id="inline-gzlqPIRLHvaM6WTNGgI0"
+    data-form-id="gzlqPIRLHvaM6WTNGgI0"
+    data-cookie-consent="true"
+    data-cookie-consent-provider="auto"
+    title="Get on The List"
+
+        >
+</iframe>
+      </div>
+    </div>
+  </section>
+
+  <div class="mcl-lightbox" id="mcl-lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button type="button" class="mcl-lb-close" id="mcl-lb-close" aria-label="Close">&times;</button>
+    <button type="button" class="mcl-arrow" style="left:16px" aria-label="Previous photo" id="mcl-lb-prev">&#8249;</button>
+    <img decoding="async" id="mcl-lb-img" src="" alt="Experience photo">
+    <div class="mcl-lb-media" id="mcl-lb-media">
+      <video id="mcl-lb-video" playsinline></video>
+      <div class="mcl-lb-controls">
+        <button type="button" id="mcl-lb-play" class="is-playing" aria-label="Play or pause">
+          <svg class="mcl-ic-play" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+          <svg class="mcl-ic-pause" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z" fill="currentColor"/></svg>
+        </button>
+        <input type="range" id="mcl-lb-seek" min="0" max="100" step="0.1" value="0" aria-label="Seek">
+        <span id="mcl-lb-time">0:00 / 0:00</span>
+        <button type="button" id="mcl-lb-mute">MUTE</button>
+        <button type="button" id="mcl-lb-fs">FULL</button>
+      </div>
+    </div>
+    <button type="button" class="mcl-arrow" style="right:16px" aria-label="Next photo" id="mcl-lb-next">&#8250;</button>
+    <div class="mcl-lb-count" id="mcl-lb-count"></div>
+  </div>
+
+  <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+
+
+</div>
+<script>
+(function(){
+  // GHL can inject this script twice; run only once
+  if (window.__mclInit) return;
+  window.__mclInit = true;
+  // shows carousel — set each show's streaming URL in `url` when ready
+  var SHOWS = [
+    {title:'The McCord List Today', meta:'HOSTED BY RACHEL McCORD · NEW EPISODES WEEKLY', page:'https://themccordlist.com/themccordlisttoday', theme:{top:'#F7DCDC', bottom:'#4A2B33'}},
+    {title:'Dear Dr. Charryse', meta:'HOSTED BY CHARRYSE JOHNSON', page:'https://www.themccordlist.com/dear-dr-charryse'},
+    {title:'The Drama Diet with Lisa Stuart', meta:'HOSTED BY LISA STUART', page:'https://www.themccordlist.com/the-drama-diet-with-lisa-stuart'},
+    {title:'Taylor Taylor Taylor', meta:'HOSTED BY TAYLOR BROOKE', page:'https://themccordlist.com/taylor-taylor-taylor'},
+    {title:'Redefining Possible with Peyton', meta:'HOSTED BY PEYTON HOFFMAN', page:'https://themccordlist.com/redefining-possible-with-peyton'},
+    {title:'In Heels with Keni Silva', meta:'HOSTED BY KENI SILVA', page:'https://www.themccordlist.com/in-heels-with-keni-silva'},
+    {title:'Profit By Design with Maya', meta:'HOSTED BY MAYA MIHAJLOVIC', page:'https://themccordlist.com/profit-by-design'},
+    {title:'Soulful Career Calling with Kasi Beaney', meta:'HOSTED BY KASI BEANEY', page:'https://www.themccordlist.com/soulful-career-calling'},
+    {title:'The Book Club with Ruth Klein', meta:'HOSTED BY RUTH KLEIN', page:'https://www.themccordlist.com/the-book-club-with-ruth-klein'},
+    {title:'The Melina Method', meta:'HOSTED BY MELINA VLAHOS', page:'https://www.themccordlist.com/the-melina-method'},
+    {title:'What Comes Next with Nancy Steiner', meta:'HOSTED BY NANCY STEINER', page:'https://www.themccordlist.com/what-comes-next-with-nancy-steiner'},
+    {title:'Women Helping Women with Christina Rowe', meta:'HOSTED BY CHRISTINA ROWE', page:'https://www.themccordlist.com/women-helping-women-with-christina-rowe'},
+    {title:'Redesign Your Life with Rey', meta:'HOSTED BY REY III VIQUEZ', page:'https://www.themccordlist.com/redesign-your-life'},
+    {title:'Stop Pretending You\'re Fine with Krista Rooney', meta:'HOSTED BY KRISTA ROONEY', page:'https://themccordlist.com/stop-pretending-youre-fine'},
+    {title:'My Midlife Era with Julie Waas', meta:'HOSTED BY JULIE WAAS', page:'https://themccordlist.com/my-midlife-era-with-julie-waas'},
+    {title:'Behind The Label with LeiLani', meta:'HOSTED BY LEILANI', page:'https://themccordlist.com/behind-the-label'},
+    {title:'ViralBrand with Rick Schirmer', meta:'HOSTED BY RICK SCHIRMER', page:'https://www.themccordlist.com/viralbrand-tv-with-rick-schirmer'}
+  ];
+  // hero slideshow (banner rotator)
+  var AUTOPLAY_SECONDS = 6;
+  var slides = Array.prototype.slice.call(document.querySelectorAll('#mcl-slideshow .mcl-slide'));
+  var dots = Array.prototype.slice.call(document.querySelectorAll('#mcl-dots button'));
+  var counter = document.getElementById('mcl-counter');
+  var i = 0, timer;
+  function show(n){
+    i = (n + slides.length) % slides.length;
+    slides.forEach(function(sl, j){ sl.classList.toggle('is-on', j === i); });
+    dots.forEach(function(d, j){ d.classList.toggle('is-on', j === i); });
+    counter.textContent = ('0' + (i + 1)).slice(-2) + ' / 0' + slides.length;
+    clearInterval(timer);
+    timer = setInterval(function(){ show(i + 1); }, AUTOPLAY_SECONDS * 1000);
+  }
+  document.getElementById('mcl-prev').addEventListener('click', function(){ show(i - 1); });
+  document.getElementById('mcl-next').addEventListener('click', function(){ show(i + 1); });
+  dots.forEach(function(d, j){ d.addEventListener('click', function(){ show(j); }); });
+  var ssEl = document.getElementById('mcl-slideshow'), ssx = 0, ssy = 0;
+  ssEl.addEventListener('touchstart', function(e){ ssx = e.touches[0].clientX; ssy = e.touches[0].clientY; }, {passive:true});
+  ssEl.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - ssx, dy = e.changedTouches[0].clientY - ssy;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) show(dx < 0 ? i + 1 : i - 1);
+  }, {passive:true});
+  timer = setInterval(function(){ show(i + 1); }, AUTOPLAY_SECONDS * 1000);
+  // logo marquees: driven by requestAnimationFrame so they never freeze on mobile
+  (function(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.mcl-marquee-track'), function(mq){
+      var x = 0, last = 0, half = 0;
+      function measure(){ half = mq.scrollWidth / 2; }
+      function step(t){
+        if (!last) last = t;
+        var dt = Math.min(64, t - last);
+        last = t;
+        x -= dt * 0.042;
+        if (half > 0 && -x >= half) x += half;
+        mq.style.transform = 'translateX(' + x + 'px)';
+        requestAnimationFrame(step);
+      }
+      measure();
+      window.addEventListener('load', measure);
+      requestAnimationFrame(step);
+    });
+  })();
+  // in-page anchors: scroll, then re-correct once lazy content has settled
+  Array.prototype.forEach.call(document.querySelectorAll('.mcl-site a[href^="#"]'), function(a){
+    a.addEventListener('click', function(e){
+      var t = document.querySelector(a.getAttribute('href'));
+      if (!t) return;
+      e.preventDefault();
+      t.scrollIntoView({behavior:'smooth', block:'start'});
+      setTimeout(function(){ t.scrollIntoView({behavior:'smooth', block:'start'}); }, 950);
+    });
+  });
+  // debounced resize dispatcher: mobile browsers fire resize constantly while
+  // scrolling (URL bar collapse); only react when the WIDTH actually changes
+  var mclResizeFns = [];
+  function mclOnResize(fn){ mclResizeFns.push(fn); }
+  (function(){
+    var lastW = window.innerWidth, t;
+    window.addEventListener('resize', function(){
+      clearTimeout(t);
+      t = setTimeout(function(){
+        if (window.innerWidth === lastW) return;
+        lastW = window.innerWidth;
+        mclResizeFns.forEach(function(fn){ fn(); });
+      }, 150);
+    });
+  })();
+  // shared endless cover carousel: center cover full, neighbors peeking both sides
+  function coverCarousel(carId, prevId, nextId, data, render){
+    var car = document.getElementById(carId);
+    var track = car.querySelector('.mcl-showtrack');
+    var covers = Array.prototype.slice.call(track.children);
+    var i = 0;
+    function layout(){
+      var w = covers[0].offsetWidth;
+      var gap = Math.max(24, Math.min(56, window.innerWidth * .04));
+      var step = Math.round(w * .92 + gap);
+      track.style.height = covers[0].offsetHeight + 'px';
+      var len = covers.length;
+      covers.forEach(function(c, j){
+        var rel = (j - i + len) % len; // 0 center, 1 right, len-1 left, rest hidden offstage
+        var x, s = .84, o = '.4', z = '1', pe = 'auto';
+        if (rel === 0){ x = 0; s = 1; o = '1'; z = '3'; }
+        else if (rel === 1){ x = step; z = '2'; }
+        else if (rel === len - 1){ x = -step; z = '2'; }
+        else { x = (rel <= len / 2 ? 2 : -2) * step; o = '0'; pe = 'none'; }
+        c.style.transform = 'translateX(calc(-50% + ' + x + 'px)) scale(' + s + ')';
+        c.style.opacity = o; c.style.zIndex = z; c.style.pointerEvents = pe;
+        if (rel <= 2 || rel >= len - 2){
+          var im = c.querySelector('img');
+          if (im && im.loading === 'lazy'){ im.loading = 'eager'; }
+        }
+      });
+    }
+    function sel(n, instant){
+      i = (n + covers.length) % covers.length;
+      covers.forEach(function(c, j){ c.classList.toggle('is-on', j === i); });
+      layout();
+      render(data[i], instant, covers[i], i);
+    }
+    document.getElementById(prevId).addEventListener('click', function(){ sel(i - 1); });
+    document.getElementById(nextId).addEventListener('click', function(){ sel(i + 1); });
+    covers.forEach(function(c, j){ c.addEventListener('click', function(){ if (j !== i) sel(j); }); });
+    var tx = 0, ty = 0;
+    car.addEventListener('touchstart', function(e){ tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive:true});
+    car.addEventListener('touchend', function(e){
+      var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) sel(dx < 0 ? i + 1 : i - 1);
+    }, {passive:true});
+    mclOnResize(layout);
+    sel(0, true);
+    return sel;
+  }
+  // adaptive theme: sample the centered cover's dominant colors, repaint the
+  // shows section gradient and flip text light/dark for readability
+  var showSection = document.getElementById('mcl-shows');
+  var showPalettes = {};
+  function extractPalette(img){
+    try {
+      var cv = document.createElement('canvas');
+      var cx = cv.getContext('2d', {willReadFrequently: true});
+      cv.width = 48; cv.height = 27;
+      cx.drawImage(img, 0, 0, 48, 27);
+      var d = cx.getImageData(0, 0, 48, 27).data;
+      var buckets = {};
+      for (var p = 0; p < d.length; p += 4){
+        var key = (d[p] >> 5) + ',' + (d[p+1] >> 5) + ',' + (d[p+2] >> 5);
+        var bk = buckets[key] || (buckets[key] = {n:0, r:0, g:0, b:0});
+        bk.n++; bk.r += d[p]; bk.g += d[p+1]; bk.b += d[p+2];
+      }
+      var sat = function(c){ var mx = Math.max(c.r,c.g,c.b), mn = Math.min(c.r,c.g,c.b); return mx ? (mx-mn)/mx : 0; };
+      var lum = function(c){ return (.2126*c.r + .7152*c.g + .0722*c.b) / 255; };
+      var arr = Object.keys(buckets).map(function(k){ var b = buckets[k]; return {n:b.n, r:b.r/b.n, g:b.g/b.n, b:b.b/b.n}; });
+      arr.sort(function(a,b){ return b.n*(0.25+sat(b)) - a.n*(0.25+sat(a)); });
+      var c1 = arr[0], c2 = null;
+      for (var q = 1; q < arr.length; q++){
+        var c = arr[q], dr = c.r-c1.r, dg = c.g-c1.g, db = c.b-c1.b;
+        if (dr*dr + dg*dg + db*db > 2600){ c2 = c; break; }
+      }
+      if (!c2) c2 = {r:c1.r*.45, g:c1.g*.45, b:c1.b*.45};
+      return {c1:c1, c2:c2, dark: (lum(c1)*.6 + lum(c2)*.4) < .52};
+    } catch(e){ return null; }
+  }
+  function applyShowTheme(idx, img, override){
+    var L = function(c){ return (.2126*c.r + .7152*c.g + .0722*c.b) / 255; };
+    var setVars = function(t, b){
+      showSection.style.setProperty('--shc1', 'rgb(' + t.r + ',' + t.g + ',' + t.b + ')');
+      showSection.style.setProperty('--shc2', 'rgb(' + b.r + ',' + b.g + ',' + b.b + ')');
+      showSection.style.setProperty('--shtop', L(t) < .55 ? '#FCFCFD' : '#0C0C0C');
+      showSection.style.setProperty('--shbot', L(b) < .55 ? '#FCFCFD' : '#0C0C0C');
+      showSection.style.setProperty('--shbotsub', L(b) < .55 ? 'rgba(252,252,253,.75)' : 'rgba(12,12,12,.62)');
+    };
+    if (override){
+      var hx = function(h){ h = h.replace('#',''); return {r:parseInt(h.substr(0,2),16), g:parseInt(h.substr(2,2),16), b:parseInt(h.substr(4,2),16)}; };
+      setVars(hx(override.top), hx(override.bottom));
+      return;
+    }
+    var apply = function(p){
+      if (!p) return;
+      var m = function(c, t, a){ return Math.round(c + (t - c) * a); };
+      setVars({r:m(p.c1.r,255,.1), g:m(p.c1.g,255,.1), b:m(p.c1.b,255,.1)},
+              {r:m(p.c2.r,0,.28), g:m(p.c2.g,0,.28), b:m(p.c2.b,0,.28)});
+    };
+    if (showPalettes[idx] !== undefined){ apply(showPalettes[idx]); return; }
+    var run = function(){ showPalettes[idx] = extractPalette(img); apply(showPalettes[idx]); };
+    if (img.complete && img.naturalWidth) run();
+    else img.addEventListener('load', run, {once:true});
+  }
+  var sinfo = document.getElementById('mcl-showinfo');
+  var showSel = coverCarousel('mcl-showcar', 'mcl-show-prev', 'mcl-show-next', SHOWS, function(d, instant, cover, idx){
+    applyShowTheme(idx, cover.querySelector('img'), d.theme);
+    var apply = function(){
+      document.getElementById('mcl-show-title').textContent = d.title;
+      document.getElementById('mcl-show-meta').textContent = d.meta;
+      var lm = document.getElementById('mcl-show-learn');
+      lm.style.display = d.page ? '' : 'none';
+      if (d.page){ lm.href = d.page; }
+      sinfo.style.opacity = '1';
+    };
+    if (instant){ apply(); return; }
+    sinfo.style.opacity = '0';
+    setTimeout(apply, 300);
+  });
+  // full show list: click a name to jump the carousel to that show's slide
+  (function(){
+    var list = document.getElementById('mcl-showlist');
+    var tog = document.getElementById('mcl-showlist-toggle');
+    function setOpen(on){
+      list.classList.toggle('is-open', on);
+      tog.textContent = on ? 'HIDE LIST' : 'FULL LIST';
+    }
+    SHOWS.forEach(function(d, j){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = d.title;
+      b.addEventListener('click', function(){
+        setOpen(false);
+        showSel(j);
+        document.getElementById('mcl-showcar').scrollIntoView({behavior:'smooth', block:'center'});
+      });
+      list.appendChild(b);
+    });
+    tog.addEventListener('click', function(){ setOpen(!list.classList.contains('is-open')); });
+  })();
+  // lock each info panel to its tallest state so the section height never jumps
+  function lockInfoHeight(panel, data, fill){
+    var clone = panel.cloneNode(true);
+    clone.style.position = 'absolute';
+    clone.style.visibility = 'hidden';
+    clone.style.minHeight = '0';
+    clone.style.width = panel.clientWidth + 'px';
+    panel.parentNode.appendChild(clone);
+    var max = 0;
+    data.forEach(function(d){ fill(clone, d); max = Math.max(max, clone.offsetHeight); });
+    clone.parentNode.removeChild(clone);
+    panel.style.minHeight = max + 'px';
+  }
+  function lockAllInfoHeights(){
+    lockInfoHeight(sinfo, SHOWS, function(c, d){
+      c.querySelector('h3').textContent = d.title;
+      c.querySelector('.mcl-meta').textContent = d.meta;
+      c.querySelector('#mcl-show-learn').style.display = d.page ? '' : 'none';
+    });
+  }
+  lockAllInfoHeights();
+  mclOnResize(lockAllInfoHeights);
+  window.addEventListener('load', lockAllInfoHeights);
+  // homepage reel: start streaming only when near the viewport, pause offscreen
+  var reel = document.getElementById('mcl-reel-video');
+  if (reel && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          if (!reel.getAttribute('src')){ reel.src = reel.getAttribute('data-src'); }
+          reel.play().catch(function(){});
+        } else {
+          reel.pause();
+        }
+      });
+    }, {rootMargin: '200px 0px'}).observe(reel);
+  } else if (reel){
+    reel.src = reel.getAttribute('data-src');
+  }
+  // showcase video: lazy start, pause offscreen, tap-for-sound toggle
+  var showcase = document.getElementById('mcl-showcase-video');
+  if (showcase && 'IntersectionObserver' in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){
+          if (!showcase.getAttribute('src')){ showcase.src = showcase.getAttribute('data-src'); }
+          showcase.play().catch(function(){});
+        } else {
+          showcase.pause();
+        }
+      });
+    }, {rootMargin: '200px 0px'}).observe(showcase);
+  } else if (showcase){
+    showcase.src = showcase.getAttribute('data-src');
+  }
+  document.getElementById('mcl-showcase-sound').addEventListener('click', function(){
+    showcase.muted = !showcase.muted;
+    this.textContent = showcase.muted ? 'TAP FOR SOUND' : 'MUTE';
+  });
+  // event albums: thumbnail grids + shared lightbox
+  var lb = document.getElementById('mcl-lightbox');
+  var lbImg = document.getElementById('mcl-lb-img');
+  var lbCountEl = document.getElementById('mcl-lb-count');
+  var lbVid = document.getElementById('mcl-lb-video');
+  var lbMedia = document.getElementById('mcl-lb-media');
+  var lbPlay = document.getElementById('mcl-lb-play');
+  var lbSeek = document.getElementById('mcl-lb-seek');
+  var lbTime = document.getElementById('mcl-lb-time');
+  var lbSet = [], lbI = 0;
+  function lbStopVideo(){
+    lbVid.pause();
+    lbVid.removeAttribute('src');
+    lbVid.load();
+    lbMedia.style.display = 'none';
+    lbSeek.value = 0;
+    lbTime.textContent = '0:00 / 0:00';
+  }
+  function lbShow(n){
+    lbI = (n + lbSet.length) % lbSet.length;
+    var d = lbSet[lbI];
+    if (d.video){
+      lbImg.style.display = 'none';
+      lbMedia.style.display = 'block';
+      if (lbVid.getAttribute('src') !== d.src){ lbVid.src = d.src; }
+      lbVid.play().catch(function(){});
+    } else {
+      lbStopVideo();
+      lbImg.style.display = 'block';
+      clearTimeout(lbImg._fbT);
+      var fallback = d.orig ? function(){ lbImg.onerror = null; clearTimeout(lbImg._fbT); if (lbImg.src !== d.orig){ lbImg.src = d.orig; } } : null;
+      lbImg.onerror = fallback;
+      if (fallback){ lbImg._fbT = setTimeout(function(){ if (!lbImg.naturalWidth) fallback(); }, 6000); }
+      lbImg.src = d.src;
+    }
+    lbCountEl.textContent = (lbI + 1) + ' / ' + lbSet.length;
+  }
+  function lbFmt(t){ t = Math.max(0, Math.floor(t || 0)); return Math.floor(t / 60) + ':' + ('0' + (t % 60)).slice(-2); }
+  lbPlay.addEventListener('click', function(){ if (lbVid.paused){ lbVid.play().catch(function(){}); } else { lbVid.pause(); } });
+  lbVid.addEventListener('play', function(){ lbPlay.classList.add('is-playing'); });
+  lbVid.addEventListener('pause', function(){ lbPlay.classList.remove('is-playing'); });
+  lbVid.addEventListener('timeupdate', function(){
+    if (lbVid.duration){ lbSeek.value = lbVid.currentTime / lbVid.duration * 100; }
+    lbTime.textContent = lbFmt(lbVid.currentTime) + ' / ' + lbFmt(lbVid.duration);
+  });
+  lbSeek.addEventListener('input', function(){ if (lbVid.duration){ lbVid.currentTime = lbSeek.value / 100 * lbVid.duration; } });
+  document.getElementById('mcl-lb-mute').addEventListener('click', function(){
+    lbVid.muted = !lbVid.muted;
+    this.textContent = lbVid.muted ? 'UNMUTE' : 'MUTE';
+  });
+  document.getElementById('mcl-lb-fs').addEventListener('click', function(){
+    if (lbVid.requestFullscreen){ lbVid.requestFullscreen(); }
+    else if (lbVid.webkitEnterFullscreen){ lbVid.webkitEnterFullscreen(); }
+  });
+  function lbOpen(set, n){
+    lbSet = set;
+    lb.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    lbShow(n);
+  }
+  function lbClose(){
+    lbStopVideo();
+    lb.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('mcl-lb-prev').addEventListener('click', function(){ lbShow(lbI - 1); });
+  document.getElementById('mcl-lb-next').addEventListener('click', function(){ lbShow(lbI + 1); });
+  document.getElementById('mcl-lb-close').addEventListener('click', lbClose);
+  lb.addEventListener('click', function(e){ if (e.target === lb) lbClose(); });
+  document.addEventListener('keydown', function(e){
+    if (!lb.classList.contains('is-open')) return;
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowLeft') lbShow(lbI - 1);
+    if (e.key === 'ArrowRight') lbShow(lbI + 1);
+  });
+  var lbx = 0, lby = 0;
+  lb.addEventListener('touchstart', function(e){ lbx = e.touches[0].clientX; lby = e.touches[0].clientY; }, {passive:true});
+  lb.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - lbx, dy = e.changedTouches[0].clientY - lby;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) lbShow(dx < 0 ? lbI + 1 : lbI - 1);
+  }, {passive:true});
+  Array.prototype.forEach.call(document.querySelectorAll('.mcl-album'), function(album){
+    var thumbs = Array.prototype.slice.call(album.querySelectorAll('.mcl-albumthumb'));
+    var items = thumbs.map(function(t){
+      var v = t.getAttribute('data-video');
+      if (v) return {src: v, video: true};
+      return {src: t.getAttribute('data-full') || t.querySelector('img').src, orig: t.getAttribute('data-orig'), video: false};
+    });
+    thumbs.forEach(function(t, j){ t.addEventListener('click', function(){ lbOpen(items, j); }); });
+    var grid = album.querySelector('.mcl-album-grid');
+    var more = album.querySelector('.mcl-album-more button');
+    // collapsed view always shows exactly two FULL rows, whatever the column count
+    function applyCollapse(){
+      var collapsed = grid.classList.contains('is-collapsed');
+      var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').length;
+      var show = collapsed ? cols * 2 : thumbs.length;
+      thumbs.forEach(function(t, j){ t.style.display = j < show ? '' : 'none'; });
+    }
+    applyCollapse();
+    mclOnResize(applyCollapse);
+    if (more){
+      var allLabel = more.textContent;
+      more.addEventListener('click', function(){
+        var collapsed = grid.classList.toggle('is-collapsed');
+        more.textContent = collapsed ? allLabel : 'SHOW LESS';
+        applyCollapse();
+        if (collapsed) album.scrollIntoView({behavior:'smooth'});
+      });
+    }
+  });
+  // get-on-the-list inline form reveal
+  var listForm = document.getElementById('mcl-list-form');
+  document.getElementById('mcl-list-open').addEventListener('click', function(){
+    var open = listForm.classList.toggle('is-open');
+    this.textContent = open ? 'HIDE THE FORM' : 'APPLY TO THE LIST';
+    if (open){ listForm.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  });
+  // apply links open the application form on arrival
+  Array.prototype.forEach.call(document.querySelectorAll('.mcl-applylist'), function(a){
+    a.addEventListener('click', function(){
+      if (!listForm.classList.contains('is-open')){
+        document.getElementById('mcl-list-open').click();
+      }
+    });
+  });
+})();
+</script>
+
+<!-- global footer -->
+<!-- The McCord List: global footer -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300..600;1,300..500&display=swap" rel="stylesheet">
+<style>
+  .mcl-footer{margin:0;background:#0C0C0C;color:#FCFCFD;padding:88px 24px 52px;text-align:center;font-family:Jost,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4}
+  .mcl-footer *{box-sizing:border-box}
+  .mcl-footer a{text-decoration:none;transition:opacity .25s}
+  .mcl-footer a:hover{opacity:.55}
+  .mcl-footer .mcl-logo{margin:0}
+  .mcl-footer .mcl-logoimg{width:clamp(200px,24vw,300px);height:auto;display:block;margin:0 auto}
+  .mcl-footer nav{margin:36px 0 0;display:flex;justify-content:center;gap:36px;flex-wrap:wrap}
+  .mcl-footer nav a{color:#FCFCFD;font-size:11px;letter-spacing:.26em}
+  .mcl-footer nav a.mcl-pink{color:#F7DCDC}
+  .mcl-footer .mcl-frule{width:56px;height:1px;background:#F7DCDC;margin:44px auto}
+  .mcl-social{display:flex;justify-content:center;gap:30px;flex-wrap:wrap}
+  .mcl-social a{color:rgba(252,252,253,.75);font-size:10.5px;letter-spacing:.3em}
+  .mcl-footer .mcl-legal{margin:40px 0 0;font-size:10.5px;letter-spacing:.2em;color:rgba(252,252,253,.5)}
+</style>
+<footer class="mcl-footer">
+  <p class="mcl-logo"><a href="https://themccordlist.com/" aria-label="The McCord List home"><img class="mcl-logoimg" src="https://wsrv.nl/?url=https%3A%2F%2Fassets.cdn.filesafe.space%2F3kYX5YFRdgE7aBsBEOuc%2Fmedia%2F6a7367acf325d74f8f3acf18.png&w=600&output=webp&q=80" data-orig="https://assets.cdn.filesafe.space/3kYX5YFRdgE7aBsBEOuc/media/6a7367acf325d74f8f3acf18.png" onerror="this.onerror=null;this.src=this.getAttribute('data-orig');" alt="The McCord List" loading="lazy"></a></p>
+  <nav>
+    <a href="https://themccordlist.com/#mcl-the-lot">THE LOT</a>
+    <a href="https://themccordlist.com/#mcl-suite">THE SUITE</a>
+    <a href="https://themccordlist.com/#mcl-events">HOLLYWOOD EXPERIENCES</a>
+    <a href="https://themccordlist.com/#mcl-shows">SHOWS</a>
+    <a href="https://themccordlist.com/#mcl-select">HOST</a>
+    <a class="mcl-pink" href="https://themccordlist.com/#mcl-list">APPLY TO THE LIST</a>
+  </nav>
+  <div class="mcl-frule"></div>
+  <div class="mcl-social">
+    <a href="https://www.instagram.com/iamrachelmccord/" target="_blank" rel="noopener">@IAMRACHELMCCORD</a>
+    <a href="https://www.instagram.com/themccordlist/" target="_blank" rel="noopener">@THEMCCORDLIST</a>
+  </div>
+  <p class="mcl-legal">THE McCORD LIST · A MEDIA NETWORK FOUNDED BY RACHEL McCORD &amp; RICK SCHIRMER</p>
+  <p class="mcl-legal" style="margin-top:12px">© 2026 LAUNCHPRENEUR, INC. · VIRALBRAND · MBS MEDIA CAMPUS, 1600 ROSECRANS AVENUE, MANHATTAN BEACH, CALIFORNIA</p>
+</footer>
+
+</body>
+</html>
